@@ -19,6 +19,8 @@ public class Player {
   private int hits;
 
   private boolean restart = false;
+  
+  private boolean isTeam;
 
 
   public Player(int x, int y, int direction, boolean isBox) {
@@ -28,17 +30,22 @@ public class Player {
     health = 3;
     hits = 0;
 
-    if (isBox) playerW = BOX_W;
-    else playerW = ELLIPSE_W;
-
+    if (isBox){
+      playerW = BOX_W;
+      isTeam = false;
+    }
+    else{
+      playerW = ELLIPSE_W;
+      isTeam = true;
+    }
     ellipseMode(CORNER);
   }
 
-  private void render(int playerNum) { //parameter is 0 if drawing player, 1 if drawing opponent
-    if (playerNum == 0) drawBox();
+  private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
+    if (!isTeam) drawBox();
     else drawCircle();
 
-    if (shotFired == 1) drawShot(playerNum);
+    if (shotFired == 1) drawShot();
   }
 
   private void updateShot() {
@@ -68,11 +75,11 @@ public class Player {
     }
   }
 
-  private void checkShotCollision(int player) {
+  private void checkShotCollision() {
     if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
       if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
         shotFired = 0;
-        if (player == 0) {
+        if (!isTeam) {
           hits++;
           if (DEBUG) println("You hit the enemy " + hits + " time(s)");
           if (hits == 3) {
@@ -105,12 +112,10 @@ public class Player {
   }
 
 
-  private void drawShot(int player) {
+  private void drawShot() {
     line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
-
-    updateShot();
-    
-    checkShotCollision(player);
+    updateShot();   
+    checkShotCollision();
   }
 
   private void drawBox() {

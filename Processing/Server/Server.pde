@@ -51,7 +51,7 @@ void draw() {
   stroke(255, 0, 0);
   fill(255, 0, 0);
   //send player information to opponent
-  player.render(0);
+  player.render();
 
   //recieve info from client/opponent here
   c = s.available();
@@ -72,7 +72,7 @@ void draw() {
 
   stroke(0, 0, 255);
   fill(0, 0, 255);
-  gunner.render(1);
+  gunner.render();
 
   if (gameOver) {
     stroke(0);
