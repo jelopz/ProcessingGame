@@ -34,8 +34,8 @@ int startX = 30;
 int startY = 150;
 int startDirection = 3;
 
-int gunnerStartX = 340;
-int gunnerStartY = 150;
+int gunnerStartX = 340 + 15;
+int gunnerStartY = 150 + 15;
 int gunnerStartDirection = 2;
 
 int healerStartX;

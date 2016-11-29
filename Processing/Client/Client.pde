@@ -7,15 +7,11 @@ processing.net.Client c;
 String input;
 int data[];
 
-
-
-int boxW = 30;
-
 Player player;
 Player opponent;
 
-int startX = 340;
-int startY = 150;
+int startX = 340 + 15;
+int startY = 150 + 15;
 int startDirection = 2;
 int opponentStartX = 30;
 int opponentStartY = 150;
@@ -34,8 +30,8 @@ void setup() {
   stroke(255, 0, 0);
   fill(255, 0, 0);
 
-  player = new Player(startX, startY, startDirection, true);
-  opponent = new Player(opponentStartX, opponentStartY, opponentStartDirection, false);
+  player = new Player(startX, startY, startDirection, false);
+  opponent = new Player(opponentStartX, opponentStartY, opponentStartDirection, true);
   player.setOpponent(opponent);
   opponent.setOpponent(player);
 

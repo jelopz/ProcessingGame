@@ -3,6 +3,8 @@ public class Player {
 
   Player opponentMan;
   private final int boxW = 30;
+  private final int ellipseW = 15;
+  private int playerW;
   private int health;
   private int x, y;
   private int direction;
@@ -19,26 +21,33 @@ public class Player {
   private boolean restart = false;
   private boolean ready;
 
-  public Player(int x, int y, int direction, boolean playable) {
+  public Player(int x, int y, int direction, boolean isBox) {
     this.x = x;
     this.y = y;
     this.direction = direction;
     health = 3;
     hits = 0;
+    
+    if(isBox) playerW = boxW;
+    else playerW = ellipseW;
+    
+    ellipseMode(CORNER);
   }
 
   private void render(int player) { //parameter is 0 if drawing player, 1 if drawing opponent
     //    println(player + " health " + health);
-    if (!(player == 1)) drawBox();
+    if (!(player == 1)) drawCircle();
     if(!gameOver) drawShot(player);
     if (soundPulsing) drawSound();
   }
 
   private void drawSound() {
+    ellipseMode(CENTER);
     stroke(255,255,0);
     noFill();
     ellipse(pulseCenterX, pulseCenterY, pulseEllipseD, pulseEllipseD);
     pulseEllipseD += 25;
+    ellipseMode(CORNER);
   }
 
   private void drawShot(int player) {
@@ -76,8 +85,8 @@ public class Player {
       }
     }
 
-    if (projectileStartX <= opponentMan.x+boxW && projectileStartX >= opponentMan.x) {
-      if (projectileStartY <= opponentMan.y+boxW && projectileStartY >= opponentMan.y) {
+    if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
+      if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
         shotFired = 0;
         soundPulsing = false;
         if (player == 0) {
@@ -114,19 +123,27 @@ public class Player {
 
   private void drawBox() {
     rect(x, y, boxW, boxW);
-
+    drawDirectionalIndicator();
+  }
+  
+  private void drawCircle() {
+    ellipse(x, y, ellipseW, ellipseW);
+    drawDirectionalIndicator();
+  }
+  
+  private void drawDirectionalIndicator(){
     switch(direction) {
     case 0://up
-      line(x+boxW/2, y, x+boxW/2, y-5);
+      line(x+playerW/2, y, x+playerW/2, y-5);
       break;
     case 1://down
-      line(x+boxW/2, y+boxW, x+boxW/2, y+boxW+5);
+      line(x+playerW/2, y+playerW, x+playerW/2, y+playerW+5);
       break;
     case 2://left
-      line(x, y+boxW/2, x-5, y+boxW/2);
+      line(x, y+playerW/2, x-5, y+playerW/2);
       break;
     case 3://right
-      line(x+boxW, y+boxW/2, x+boxW+5, y+boxW/2);
+      line(x+playerW, y+playerW/2, x+playerW+5, y+playerW/2);
       break;
     default:
       break;
@@ -206,34 +223,34 @@ public class Player {
     if (shotFired == 0) {
       switch(direction) {
       case 0://up
-        projectileStartX = x+boxW/2;
+        projectileStartX = x+playerW/2;
         projectileStartY = y-5;
-        projectileEndX = x+boxW/2;
+        projectileEndX = x+playerW/2;
         projectileEndY = y-10;
         projectileDirection = 0;
         shotFired = 1;
         break;
       case 1://down
-        projectileStartX = x+boxW/2;
-        projectileStartY = y+boxW+5;
-        projectileEndX = x+boxW/2;
-        projectileEndY = y+boxW+10;
+        projectileStartX = x+playerW/2;
+        projectileStartY = y+playerW+5;
+        projectileEndX = x+playerW/2;
+        projectileEndY = y+playerW+10;
         projectileDirection = 1;
         shotFired = 1;
         break;
       case 2://left
         projectileStartX = x-5;
-        projectileStartY = y+boxW/2;
+        projectileStartY = y+playerW/2;
         projectileEndX = x-10;
-        projectileEndY = y+boxW/2;
+        projectileEndY = y+playerW/2;
         projectileDirection = 2;
         shotFired = 1;
         break;
       case 3://right
-        projectileStartX = x+boxW+5;
-        projectileStartY = y+boxW/2;
-        projectileEndX = x+boxW+10;
-        projectileEndY = y+boxW/2;
+        projectileStartX = x+playerW+5;
+        projectileStartY = y+playerW/2;
+        projectileEndX = x+playerW+10;
+        projectileEndY = y+playerW/2;
         projectileDirection = 3;
         shotFired = 1;
         break;

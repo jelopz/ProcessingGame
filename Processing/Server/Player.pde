@@ -3,6 +3,8 @@ public class Player {
 
   Player opponentMan;
   private final int boxW = 30;
+  private final int ellipseW = 15;
+  private int playerW;
   private int health;
   private int x, y;
   private int direction;
@@ -14,16 +16,22 @@ public class Player {
   private boolean restart = false;
 
 
-  public Player(int x, int y, int direction, boolean playable) {
+  public Player(int x, int y, int direction, boolean isBox) {
     this.x = x;
     this.y = y;
     this.direction = direction;
     health = 3;
     hits = 0;
+    
+    if(isBox) playerW = boxW;
+    else playerW = ellipseW;
+    
+    ellipseMode(CORNER);
   }
 
   private void render(int playerNum) { //parameter is 0 if drawing player, 1 if drawing opponent
-    drawBox();
+    if(playerNum == 0) drawBox();
+    else drawCircle();
     drawShot(playerNum);
   }
 
@@ -58,8 +66,8 @@ public class Player {
     }
 
 
-    if (projectileStartX <= opponentMan.x+boxW && projectileStartX >= opponentMan.x) {
-      if (projectileStartY <= opponentMan.y+boxW && projectileStartY >= opponentMan.y) {
+    if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
+      if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
         shotFired = 0;
         if (player == 0) {
           hits++;
@@ -95,19 +103,27 @@ public class Player {
 
   private void drawBox() {
     rect(x, y, boxW, boxW);
-
+    drawDirectionalIndicator();
+  }
+  
+  private void drawCircle() {
+    ellipse(x, y, ellipseW, ellipseW);
+    drawDirectionalIndicator();
+  }
+  
+  private void drawDirectionalIndicator(){
     switch(direction) {
     case 0://up
-      line(x+boxW/2, y, x+boxW/2, y-5);
+      line(x+playerW/2, y, x+playerW/2, y-5);
       break;
     case 1://down
-      line(x+boxW/2, y+boxW, x+boxW/2, y+boxW+5);
+      line(x+playerW/2, y+playerW, x+playerW/2, y+playerW+5);
       break;
     case 2://left
-      line(x, y+boxW/2, x-5, y+boxW/2);
+      line(x, y+playerW/2, x-5, y+playerW/2);
       break;
     case 3://right
-      line(x+boxW, y+boxW/2, x+boxW+5, y+boxW/2);
+      line(x+playerW, y+playerW/2, x+playerW+5, y+playerW/2);
       break;
     default:
       break;
