@@ -127,6 +127,5 @@ void keyPressed() {
 }
 
 void sendData() {
-  c.write(player.x + " " + player.y + " " + player.direction + " " + player.projectileStartX + " " + player.projectileStartY + " " +
-    player.projectileEndX + " " + player.projectileEndY + " " + player.shotFired + " " + player.projectileDirection + "\n");
+  c.write(player.getData());
 }

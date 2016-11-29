@@ -293,4 +293,8 @@ public class Player {
       direction = opponentStartDirection;
     }
   }
+  
+  public String getData(){
+    return (x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
+  }
 }

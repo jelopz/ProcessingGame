@@ -145,7 +145,5 @@ void keyPressed() {
 }
 
 void sendData() {
-  s.write(player.x + " " + player.y + " " + player.direction + " " + player.projectileStartX + " " + player.projectileStartY + " " +
-    player.projectileEndX + " " + player.projectileEndY + " " + player.shotFired + " " + player.projectileDirection + "\n"); // + " " +
-  //  player.health + " " + opponent.health + "\n");
+  s.write(player.getData());
 }

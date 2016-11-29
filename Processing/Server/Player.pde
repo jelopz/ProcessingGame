@@ -274,4 +274,8 @@ public class Player {
       direction = gunnerStartDirection;
     }
   }
+  
+  public String getData(){
+    return (x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
+  }
 }
