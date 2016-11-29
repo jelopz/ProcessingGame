@@ -68,12 +68,7 @@ public class Player {
     }
   }
 
-
-  private void drawShot(int player) {
-    line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
-    
-    updateShot();
-
+  private void checkShotCollision(int player) {
     if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
       if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
         shotFired = 0;
@@ -107,6 +102,15 @@ public class Player {
       shotFired = 0;
       //      soundPulsing = false;
     }
+  }
+
+
+  private void drawShot(int player) {
+    line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
+
+    updateShot();
+    
+    checkShotCollision(player);
   }
 
   private void drawBox() {
