@@ -100,8 +100,8 @@ void draw() {
         reset();
       }
     } else {
-      if (winner) text("You win. Press S to ready up for the next game", 15, 45);
-      else text("You lose. Press S to ready up for the next game", 15, 45);
+      if (winner) text("You win. Press S to get ready for the next game", 15, 45);
+      else text("You lose. Press S to get ready for the next game", 15, 45);
     }
   }
 
