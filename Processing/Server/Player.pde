@@ -137,7 +137,7 @@ public class Player {
   private void update(int movementDirection) {
     if (movementDirection != 9) {
       move(movementDirection);
-    } else updateShot(BOX_W);
+    } else updateShot();
   }
 
   private void clientUpdate(int data[]) {
@@ -165,8 +165,10 @@ public class Player {
     boolean isLegal = true;
 
     if (movementDirection == 0) {
-      if (y == opponentMan.y+BOX_W) {
-        if ((x >= opponentMan.x && x < opponentMan.x+BOX_W) || (x+BOX_W>opponentMan.x && x+BOX_W<=opponentMan.x+BOX_W)) {
+      if (y == opponentMan.y+opponentMan.playerW) {
+        if ((x >= opponentMan.x && x < opponentMan.x+opponentMan.playerW) ||
+        (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
+        (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -175,16 +177,20 @@ public class Player {
 
       direction = 0;
     } else if (movementDirection == 1) {
-      if (y+BOX_W == opponentMan.y) {
-        if ((x >= opponentMan.x && x < opponentMan.x+BOX_W) || (x+BOX_W>opponentMan.x && x+BOX_W<=opponentMan.x+BOX_W)) {
+      if (y+playerW == opponentMan.y) {
+        if ((x >= opponentMan.x && x < opponentMan.x+opponentMan.playerW) ||
+        (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
+        (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
           isLegal = false;
         }
       }
-      if (isLegal && y != (windowHeight - BOX_W)) y+=5;
+      if (isLegal && y != (windowHeight - playerW)) y+=5;
       direction = 1;
     } else if (movementDirection == 2) {
-      if (x == opponentMan.x+BOX_W) {
-        if ((y >= opponentMan.y && y < opponentMan.y+BOX_W) || (y+BOX_W>opponentMan.y && y+BOX_W <= opponentMan.y+BOX_W)) {
+      if (x == opponentMan.x+opponentMan.playerW) {
+        if ((y >= opponentMan.y && y < opponentMan.y+opponentMan.playerW) ||
+        (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
+        (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -192,48 +198,51 @@ public class Player {
       if (isLegal && x != 0) x-=5;
       direction = 2;
     } else if (movementDirection == 3) {
-      if (x+BOX_W == opponentMan.x) {
-        if ((y >= opponentMan.y && y < opponentMan.y+BOX_W) || (y+BOX_W>opponentMan.y && y+BOX_W <= opponentMan.y+BOX_W)) {
+      if (x+playerW == opponentMan.x) {
+        if ((y >= opponentMan.y && y < opponentMan.y+opponentMan.playerW) ||
+        (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
+        (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
           isLegal = false;
         }
       }
 
-      if (isLegal && x != windowWidth - BOX_W) x+=5;
+      if (isLegal && x != windowWidth - playerW) x+=5;
       direction = 3;
     }
   }
-  private void updateShot(int objW) {
+  
+  private void updateShot() {
     if (shotFired == 0) {
       switch(direction) {
       case 0://up
-        projectileStartX = x+objW/2;
+        projectileStartX = x+playerW/2;
         projectileStartY = y-5;
-        projectileEndX = x+objW/2;
+        projectileEndX = x+playerW/2;
         projectileEndY = y-10;
         projectileDirection = 0;
         shotFired = 1;
         break;
       case 1://down
-        projectileStartX = x+objW/2;
-        projectileStartY = y+objW+5;
-        projectileEndX = x+objW/2;
-        projectileEndY = y+objW+10;
+        projectileStartX = x+playerW/2;
+        projectileStartY = y+playerW+5;
+        projectileEndX = x+playerW/2;
+        projectileEndY = y+playerW+10;
         projectileDirection = 1;
         shotFired = 1;
         break;
       case 2://left
         projectileStartX = x-5;
-        projectileStartY = y+objW/2;
+        projectileStartY = y+playerW/2;
         projectileEndX = x-10;
-        projectileEndY = y+objW/2;
+        projectileEndY = y+playerW/2;
         projectileDirection = 2;
         shotFired = 1;
         break;
       case 3://right
-        projectileStartX = x+objW+5;
-        projectileStartY = y+objW/2;
-        projectileEndX = x+objW+10;
-        projectileEndY = y+objW/2;
+        projectileStartX = x+playerW+5;
+        projectileStartY = y+playerW/2;
+        projectileEndX = x+playerW+10;
+        projectileEndY = y+playerW/2;
         projectileDirection = 3;
         shotFired = 1;
         break;
