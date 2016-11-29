@@ -138,7 +138,7 @@ public class Player {
   private void update(int movementDirection) {
     if (movementDirection != 9) {
       move(movementDirection);
-    } else updateShot();
+    } else playerShot();
   }
 
   private void clientUpdate(int data[]) {
@@ -212,7 +212,7 @@ public class Player {
     }
   }
   
-  private void updateShot() {
+  private void playerShot() {
     if (shotFired == 0) {
       switch(direction) {
       case 0://up
