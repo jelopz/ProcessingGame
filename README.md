@@ -15,6 +15,7 @@ TODO:
     
   b) Maybe one person has a more powerful machinegun while the other has the ability to heal.
 3. More classes? Check out Evolve for more potential ideas.
+4. Brainstorm
 
 Known bugs:
 
