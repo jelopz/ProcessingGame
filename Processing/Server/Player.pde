@@ -36,37 +36,37 @@ public class Player {
   private void render(int playerNum) { //parameter is 0 if drawing player, 1 if drawing opponent
     if(playerNum == 0) drawBox();
     else drawCircle();
-    drawShot(playerNum);
+    
+    if(shotFired == 1) drawShot(playerNum);
   }
 
 
   private void drawShot(int player) {
-    if (shotFired == 1) {
-      line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
-      switch(projectileDirection) {
-      case 0://up
-        projectileStartX = projectileEndX;
-        projectileStartY = projectileEndY;
-        projectileEndY -= 5;
-        break;
-      case 1://down
-        projectileStartX = projectileEndX;
-        projectileStartY = projectileEndY;
-        projectileEndY += 5;
-        break;
-      case 2://left
-        projectileStartX = projectileEndX;
-        projectileStartY = projectileEndY;
-        projectileEndX -= 5;
-        break;
-      case 3://right
-        projectileStartX = projectileEndX;
-        projectileStartY = projectileEndY;
-        projectileEndX += 5;
-        break;
-      default:
-        break;
-      }
+    line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
+    
+    switch(projectileDirection) {
+    case 0://up
+      projectileStartX = projectileEndX;
+      projectileStartY = projectileEndY;
+      projectileEndY -= 5;
+      break;
+    case 1://down
+      projectileStartX = projectileEndX;
+      projectileStartY = projectileEndY;
+      projectileEndY += 5;
+      break;
+    case 2://left
+      projectileStartX = projectileEndX;
+      projectileStartY = projectileEndY;
+      projectileEndX -= 5;
+      break;
+    case 3://right
+      projectileStartX = projectileEndX;
+      projectileStartY = projectileEndY;
+      projectileEndX += 5;
+      break;
+    default:
+      break;
     }
 
 
@@ -75,16 +75,16 @@ public class Player {
         shotFired = 0;
         if (player == 0) {
           hits++;
-          if(DEBUG) println("You hit the enemy " + hits + " time(s)");
+          if (DEBUG) println("You hit the enemy " + hits + " time(s)");
           if (hits == 3) {
-            if(DEBUG) println("You win");
+            if (DEBUG) println("You win");
             gameOver = true;
             winner = true;
             hits = 0;
           }
         } else {
-          if(DEBUG) println("You've been hit");
-          if(DEBUG) println("You lose");
+          if (DEBUG) println("You've been hit");
+          if (DEBUG) println("You lose");
           gameOver = true;
           winner = false;
           opponentMan.hits = 0;

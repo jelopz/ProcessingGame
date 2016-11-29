@@ -4,24 +4,24 @@ public class Player {
   private final int ELLIPSE_W = 15;
 
   Player opponentMan;
-  
+
   private int playerW;
   private int health;
   private int x, y;
   private int direction;
-  
+
   private int projectileDirection;
   private int projectileStartX, projectileStartY;
   private int projectileEndX, projectileEndY;
   private int shotFired;
-  
+
   private boolean soundPulsing;
   private int pulseCenterX;
   private int pulseCenterY;
   private int pulseEllipseD;
-  
+
   private int hits;
-  
+
   private boolean restart = false;
 
   public Player(int x, int y, int direction, boolean isBox) {
@@ -30,23 +30,23 @@ public class Player {
     this.direction = direction;
     health = 3;
     hits = 0;
-    
-    if(isBox) playerW = BOX_W;
+
+    if (isBox) playerW = BOX_W;
     else playerW = ELLIPSE_W;
-    
+
     ellipseMode(CORNER);
   }
 
   private void render(int player) { //parameter is 0 if drawing player, 1 if drawing opponent
     //    println(player + " health " + health);
     if (!(player == 1)) drawCircle();
-    if(!gameOver) drawShot(player);
+    if (shotFired == 1) drawShot(player);
     if (soundPulsing) drawSound();
   }
 
   private void drawSound() {
     ellipseMode(CENTER);
-    stroke(255,255,0);
+    stroke(255, 255, 0);
     noFill();
     ellipse(pulseCenterX, pulseCenterY, pulseEllipseD, pulseEllipseD);
     pulseEllipseD += 25;
@@ -54,55 +54,54 @@ public class Player {
   }
 
   private void drawShot(int player) {
-    if (shotFired == 1) {
-      if (!soundPulsing) {
-        pulseCenterX = projectileStartX;
-        pulseCenterY = projectileStartY;
-        pulseEllipseD = 5;
-        soundPulsing = true;
-      }
-      if (!(player == 1)) line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
-      switch(projectileDirection) {
-      case 0://up
-        projectileStartX = projectileEndX;
-        projectileStartY = projectileEndY;
-        projectileEndY -= 5;
-        break;
-      case 1://down
-        projectileStartX = projectileEndX;
-        projectileStartY = projectileEndY;
-        projectileEndY += 5;
-        break;
-      case 2://left
-        projectileStartX = projectileEndX;
-        projectileStartY = projectileEndY;
-        projectileEndX -= 5;
-        break;
-      case 3://right
-        projectileStartX = projectileEndX;
-        projectileStartY = projectileEndY;
-        projectileEndX += 5;
-        break;
-      default:
-        break;
-      }
+    if (!soundPulsing) {
+      pulseCenterX = projectileStartX;
+      pulseCenterY = projectileStartY;
+      pulseEllipseD = 5;
+      soundPulsing = true;
     }
+    if (!(player == 1)) line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
+    switch(projectileDirection) {
+    case 0://up
+      projectileStartX = projectileEndX;
+      projectileStartY = projectileEndY;
+      projectileEndY -= 5;
+      break;
+    case 1://down
+      projectileStartX = projectileEndX;
+      projectileStartY = projectileEndY;
+      projectileEndY += 5;
+      break;
+    case 2://left
+      projectileStartX = projectileEndX;
+      projectileStartY = projectileEndY;
+      projectileEndX -= 5;
+      break;
+    case 3://right
+      projectileStartX = projectileEndX;
+      projectileStartY = projectileEndY;
+      projectileEndX += 5;
+      break;
+    default:
+      break;
+    }
+
 
     if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
       if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
         shotFired = 0;
         soundPulsing = false;
         if (player == 0) {
-          if(DEBUG) println("You hit the enemy");
-          if(DEBUG) println("You win");
+          if (DEBUG) println("You hit the enemy");
+          if (DEBUG) println("You win");
           gameOver = true;
           winner = true;
           opponentMan.hits = 0;
         } else {
           hits++;
-          if(DEBUG) println("You've been hit " + hits + " time(s)");
-          if (hits == 3){
-            if(DEBUG) println("You lose");
+          if (DEBUG) println("You've been hit " + hits + " time(s)");
+          if (hits == 3) {
+            if (DEBUG) println("You lose");
             gameOver = true;
             winner = false;
             hits = 0;
@@ -128,13 +127,13 @@ public class Player {
     rect(x, y, BOX_W, BOX_W);
     drawDirectionalIndicator();
   }
-  
+
   private void drawCircle() {
     ellipse(x, y, ELLIPSE_W, ELLIPSE_W);
     drawDirectionalIndicator();
   }
-  
-  private void drawDirectionalIndicator(){
+
+  private void drawDirectionalIndicator() {
     switch(direction) {
     case 0://up
       line(x+playerW/2, y, x+playerW/2, y-5);
@@ -170,12 +169,12 @@ public class Player {
       projectileEndY = data[6];
       shotFired = data[7];
       projectileDirection = data[8];
-//      restart = data[9];
+      //      restart = data[9];
       //health = data[9];
       //opponent.health = data[10];
     }
     catch(ArrayIndexOutOfBoundsException e) {
-      if(DEBUG) println("ArrayIndexOutOfBoundsException");
+      if (DEBUG) println("ArrayIndexOutOfBoundsException");
     }
   }
 
@@ -185,8 +184,8 @@ public class Player {
     if (movementDirection == 0) {
       if (y == opponentMan.y+opponentMan.playerW) {
         if ((x >= opponentMan.x && x < opponentMan.x+opponentMan.playerW) ||
-        (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
-        (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
+          (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
+          (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -197,8 +196,8 @@ public class Player {
     } else if (movementDirection == 1) {
       if (y+playerW == opponentMan.y) {
         if ((x >= opponentMan.x && x < opponentMan.x+opponentMan.playerW) ||
-        (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
-        (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
+          (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
+          (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -207,8 +206,8 @@ public class Player {
     } else if (movementDirection == 2) {
       if (x == opponentMan.x+opponentMan.playerW) {
         if ((y >= opponentMan.y && y < opponentMan.y+opponentMan.playerW) ||
-        (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
-        (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
+          (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
+          (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -218,8 +217,8 @@ public class Player {
     } else if (movementDirection == 3) {
       if (x+playerW == opponentMan.x) {
         if ((y >= opponentMan.y && y < opponentMan.y+opponentMan.playerW) ||
-        (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
-        (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
+          (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
+          (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -274,27 +273,26 @@ public class Player {
   private void setOpponent(Player opponent1) {
     this.opponentMan = opponent1;
   }
-  
-  public void restart(){
+
+  public void restart() {
     this.restart = true;
   }
-  
+
   public void reset(int player) {
     this.restart = false;
     if (player == 0) {
       x = startX;
       y = startY;
       direction = startDirection;
-    }
-    else
+    } else
     {
       x = opponentStartX;
       y = opponentStartY;
       direction = opponentStartDirection;
     }
   }
-  
-  public String getData(){
+
+  public String getData() {
     return (x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
   }
 }
