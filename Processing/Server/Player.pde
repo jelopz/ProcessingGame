@@ -75,16 +75,16 @@ public class Player {
         shotFired = 0;
         if (player == 0) {
           hits++;
-          println("You hit the enemy " + hits + " time(s)");
+          if(DEBUG) println("You hit the enemy " + hits + " time(s)");
           if (hits == 3) {
-            println("You win");
+            if(DEBUG) println("You win");
             gameOver = true;
             winner = true;
             hits = 0;
           }
         } else {
-          println("You've been hit");
-          println("You lose");
+          if(DEBUG) println("You've been hit");
+          if(DEBUG) println("You lose");
           gameOver = true;
           winner = false;
           opponentMan.hits = 0;
@@ -156,7 +156,7 @@ public class Player {
       //opponent.health = data[10];
     }
     catch(ArrayIndexOutOfBoundsException e) {
-      println("ArrayIndexOutOfBoundsException");
+      if(DEBUG) println("ArrayIndexOutOfBoundsException");
     }
   }
 

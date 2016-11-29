@@ -1,5 +1,6 @@
 import processing.net.*;
 
+static final boolean DEBUG = true;
 
 int windowHeight = 400;
 int windowWidth = 400;
@@ -8,21 +9,6 @@ processing.net.Server s;
 Client c;
 String input;
 int data[];
-
-//TODO:
-//
-//Make the weaker player a circle instead of a square
-////that is, make the weaker player humans while the all knowing player is a tank.
-////small circle, big square?
-//
-//Add a third player.
-////Make game 1v2 - One all knowing player vs 2 players
-//
-//Add extra functionality to team of 2
-////Wards/Flairs that light up a portion of the screen. This lets you know potentially where the opponent is or is not.
-////Maybe one person has a more powerful machinegun while the other one has the ability to heal.
-//
-//More classes? Check out Evolve for ideas potentially
 
 Player player;
 Player gunner;
@@ -74,12 +60,12 @@ void draw() {
       input = c.readString();
       input = input.substring(0, input.indexOf("\n")); // only up to the newline
       data = int(split(input, ' ')); // split values into an array
-      println("data.length: " + data.length);
+      if(DEBUG) println("data.length: " + data.length);
       if (data.length > 1) gunner.clientUpdate(data);
       else gunner.restart();
     }
     catch(StringIndexOutOfBoundsException e) {
-      println("woops"); //something went wrong
+      if(DEBUG) println("woops"); //something went wrong
     }
     //draw information from client
   }
@@ -102,11 +88,6 @@ void draw() {
       else text("You lose. Press S to get ready for the next game", 15, 45);
     }
   }
-
-  //  println("health : " + player.health);
-  //  println("opph : " + opponent.health);
-  //  println("playerx : " + player.x + "  playery :  " + player.y);
-  //  println("oppx : " + opponent.x + "  oppy :  " + opponent.y);
 }
 
 void reset() {

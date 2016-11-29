@@ -1,5 +1,7 @@
 import processing.net.*;
 
+static final boolean DEBUG = true;
+
 int windowHeight = 400;
 int windowWidth = 400;
 
@@ -52,12 +54,12 @@ void draw() {
       input = c.readString();
       input = input.substring(0, input.indexOf("\n")); // only up to the newline
       data = int(split(input, ' ')); // split values into an array
-      println("data.length: " + data.length);
+      if(DEBUG) println("data.length: " + data.length);
       if (data.length > 1) opponent.clientUpdate(data);
       else opponent.restart();
     }
     catch(StringIndexOutOfBoundsException e) {
-      println("woops"); //something went wrong
+      if(DEBUG) println("woops"); //something went wrong
     }
 
     //draw information from server
@@ -79,18 +81,7 @@ void draw() {
       else text("You lose. Press S to get ready for the next game", 15, 45);
     }
   }
-
-  //println("Health: " + player.health);
-  //println("Opp Health: " + opponent.health);
 }
-
-//void restart() {
-//  player = new Player(startX, startY, startDirection, true);
-//  opponent = new Player(opponentStartX, opponentStartY, opponentStartDirection, false);
-//  player.setOpponent(opponent);
-//  opponent.setOpponent(player);
-//  gameOver = false;
-//}
 
 void reset() {
   waiting = false;
