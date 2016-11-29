@@ -1,25 +1,28 @@
 public class Player {
 
-
-  Player opponentMan;
   private final int boxW = 30;
   private final int ellipseW = 15;
+
+  Player opponentMan;
+  
   private int playerW;
   private int health;
   private int x, y;
   private int direction;
+  
   private int projectileDirection;
   private int projectileStartX, projectileStartY;
   private int projectileEndX, projectileEndY;
   private int shotFired;
+  
   private boolean soundPulsing;
   private int pulseCenterX;
   private int pulseCenterY;
   private int pulseEllipseD;
+  
   private int hits;
   
   private boolean restart = false;
-  private boolean ready;
 
   public Player(int x, int y, int direction, boolean isBox) {
     this.x = x;
