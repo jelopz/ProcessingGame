@@ -88,9 +88,9 @@ public class Player {
     }
   }
 
-  private void checkShotCollision() {
-    if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
-      if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
+  private void checkShotCollisionForPlayers(Player opp) {
+    if (projectileStartX <= opp.x+opp.playerW && projectileStartX >= opp.x) {
+      if (projectileStartY <= opp.y+opp.playerW && projectileStartY >= opp.y) {
         shotFired = 0;
         soundPulsing = false;
         if (isTeam) {
@@ -115,6 +115,9 @@ public class Player {
         projectileEndY = -5;
       }
     }
+  }
+
+  private void checkShotCollisionForBoundaries() {
     if (projectileStartX <= 0 || projectileStartX >= windowWidth) {
       shotFired = 0;
       soundPulsing = false;
@@ -123,6 +126,17 @@ public class Player {
       shotFired = 0;
       soundPulsing = false;
     }
+  }
+
+  private void checkShotCollision() {
+    //commented out code is end goal once team of 2 is implemented. As of now, it's still 1v1.
+    //if (isTeam) checkShotCollisionForPlayers(opponentMan);
+    //else {
+    //  checkShotCollisionForPlayers(opponentTeam[0]);
+    //  checkShotCollisionForPlayers(opponentTeam[1]);
+    //}
+    checkShotCollisionForPlayers(opponentMan);
+    checkShotCollisionForBoundaries();
   }
 
   private void drawShot() {

@@ -19,7 +19,7 @@ public class Player {
   private int hits;
 
   private boolean restart = false;
-  
+
   private boolean isTeam;
 
 
@@ -30,11 +30,10 @@ public class Player {
     health = 3;
     hits = 0;
 
-    if (isBox){
+    if (isBox) {
       playerW = BOX_W;
       isTeam = false;
-    }
-    else{
+    } else {
       playerW = ELLIPSE_W;
       isTeam = true;
     }
@@ -75,9 +74,9 @@ public class Player {
     }
   }
 
-  private void checkShotCollision() {
-    if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
-      if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
+  private void checkShotCollisionForPlayers(Player opp) {
+    if (projectileStartX <= opp.x+opp.playerW && projectileStartX >= opp.x) {
+      if (projectileStartY <= opp.y+opp.playerW && projectileStartY >= opp.y) {
         shotFired = 0;
         if (!isTeam) {
           hits++;
@@ -93,7 +92,7 @@ public class Player {
           if (DEBUG) println("You lose");
           gameOver = true;
           winner = false;
-          opponentMan.hits = 0;
+          opp.hits = 0;
         }
         projectileStartX = -5;
         projectileStartY = -5;
@@ -101,6 +100,9 @@ public class Player {
         projectileEndY = -5;
       }
     }
+  }
+
+  private void checkShotCollisionForBoundaries() {
     if (projectileStartX <= 0 || projectileStartX >= windowWidth) {
       shotFired = 0;
       //      soundPulsing = false;
@@ -109,6 +111,17 @@ public class Player {
       shotFired = 0;
       //      soundPulsing = false;
     }
+  }
+
+  private void checkShotCollision() {
+    //commented out code is end goal once team of 2 is implemented. As of now, it's still 1v1.
+    //if (isTeam) checkShotCollisionForPlayers(opponentMan);
+    //else {
+    //  checkShotCollisionForPlayers(opponentTeam[0]);
+    //  checkShotCollisionForPlayers(opponentTeam[1]);
+    //}
+    checkShotCollisionForPlayers(opponentMan);
+    checkShotCollisionForBoundaries();
   }
 
 
