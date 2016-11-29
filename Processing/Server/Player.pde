@@ -4,6 +4,7 @@ public class Player {
   private final int ELLIPSE_W = 15;
 
   Player opponentMan;
+  Player opponentTeam[] = new Player[2];
   
   private int playerW;
   private int health;
@@ -254,6 +255,11 @@ public class Player {
 
   public void setOpponent(Player opponent1) {
     this.opponentMan = opponent1;
+  }
+  
+  public void setOpponent(Player o1, Player o2) {
+    opponentTeam[0] = o1;
+    opponentTeam[1] = o2;
   }
 
   public void restart() {
