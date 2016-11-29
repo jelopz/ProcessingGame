@@ -1,7 +1,7 @@
 public class Player {
 
-  private final int boxW = 30;
-  private final int ellipseW = 15;
+  private final int BOX_W = 30;
+  private final int ELLIPSE_W = 15;
 
   Player opponentMan;
   
@@ -31,8 +31,8 @@ public class Player {
     health = 3;
     hits = 0;
     
-    if(isBox) playerW = boxW;
-    else playerW = ellipseW;
+    if(isBox) playerW = BOX_W;
+    else playerW = ELLIPSE_W;
     
     ellipseMode(CORNER);
   }
@@ -125,12 +125,12 @@ public class Player {
   }
 
   private void drawBox() {
-    rect(x, y, boxW, boxW);
+    rect(x, y, BOX_W, BOX_W);
     drawDirectionalIndicator();
   }
   
   private void drawCircle() {
-    ellipse(x, y, ellipseW, ellipseW);
+    ellipse(x, y, ELLIPSE_W, ELLIPSE_W);
     drawDirectionalIndicator();
   }
   
@@ -183,8 +183,8 @@ public class Player {
     boolean isLegal = true;
 
     if (movementDirection == 0) {
-      if (y == opponentMan.y+boxW) {
-        if ((x >= opponentMan.x && x < opponentMan.x+boxW) || (x+boxW>opponentMan.x && x+boxW<=opponentMan.x+boxW)) {
+      if (y == opponentMan.y+BOX_W) {
+        if ((x >= opponentMan.x && x < opponentMan.x+BOX_W) || (x+BOX_W>opponentMan.x && x+BOX_W<=opponentMan.x+BOX_W)) {
           isLegal = false;
         }
       }
@@ -193,16 +193,16 @@ public class Player {
 
       direction = 0;
     } else if (movementDirection == 1) {
-      if (y+boxW == opponentMan.y) {
-        if ((x >= opponentMan.x && x < opponentMan.x+boxW) || (x+boxW>opponentMan.x && x+boxW<=opponentMan.x+boxW)) {
+      if (y+BOX_W == opponentMan.y) {
+        if ((x >= opponentMan.x && x < opponentMan.x+BOX_W) || (x+BOX_W>opponentMan.x && x+BOX_W<=opponentMan.x+BOX_W)) {
           isLegal = false;
         }
       }
-      if (isLegal && y != (windowHeight - boxW)) y+=5;
+      if (isLegal && y != (windowHeight - BOX_W)) y+=5;
       direction = 1;
     } else if (movementDirection == 2) {
-      if (x == opponentMan.x+boxW) {
-        if ((y >= opponentMan.y && y < opponentMan.y+boxW) || (y+boxW>opponentMan.y && y+boxW <= opponentMan.y+boxW)) {
+      if (x == opponentMan.x+BOX_W) {
+        if ((y >= opponentMan.y && y < opponentMan.y+BOX_W) || (y+BOX_W>opponentMan.y && y+BOX_W <= opponentMan.y+BOX_W)) {
           isLegal = false;
         }
       }
@@ -210,13 +210,13 @@ public class Player {
       if (isLegal && x != 0) x-=5;
       direction = 2;
     } else if (movementDirection == 3) {
-      if (x+boxW == opponentMan.x) {
-        if ((y >= opponentMan.y && y < opponentMan.y+boxW) || (y+boxW>opponentMan.y && y+boxW <= opponentMan.y+boxW)) {
+      if (x+BOX_W == opponentMan.x) {
+        if ((y >= opponentMan.y && y < opponentMan.y+BOX_W) || (y+BOX_W>opponentMan.y && y+BOX_W <= opponentMan.y+BOX_W)) {
           isLegal = false;
         }
       }
 
-      if (isLegal && x != windowWidth - boxW) x+=5;
+      if (isLegal && x != windowWidth - BOX_W) x+=5;
       direction = 3;
     }
   }
