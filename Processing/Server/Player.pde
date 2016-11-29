@@ -5,19 +5,19 @@ public class Player {
 
   Player opponentMan;
   Player opponentTeam[] = new Player[2];
-  
+
   private int playerW;
   private int health;
   private int x, y;
   private int direction;
-  
+
   private int projectileDirection;
   private int projectileStartX, projectileStartY;
   private int projectileEndX, projectileEndY;
   private int shotFired;
-  
+
   private int hits;
-  
+
   private boolean restart = false;
 
 
@@ -27,24 +27,21 @@ public class Player {
     this.direction = direction;
     health = 3;
     hits = 0;
-    
-    if(isBox) playerW = BOX_W;
+
+    if (isBox) playerW = BOX_W;
     else playerW = ELLIPSE_W;
-    
+
     ellipseMode(CORNER);
   }
 
   private void render(int playerNum) { //parameter is 0 if drawing player, 1 if drawing opponent
-    if(playerNum == 0) drawBox();
+    if (playerNum == 0) drawBox();
     else drawCircle();
-    
-    if(shotFired == 1) drawShot(playerNum);
+
+    if (shotFired == 1) drawShot(playerNum);
   }
 
-
-  private void drawShot(int player) {
-    line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
-    
+  private void updateShot() {
     switch(projectileDirection) {
     case 0://up
       projectileStartX = projectileEndX;
@@ -69,7 +66,13 @@ public class Player {
     default:
       break;
     }
+  }
 
+
+  private void drawShot(int player) {
+    line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
+    
+    updateShot();
 
     if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
       if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
@@ -110,13 +113,13 @@ public class Player {
     rect(x, y, BOX_W, BOX_W);
     drawDirectionalIndicator();
   }
-  
+
   private void drawCircle() {
     ellipse(x, y, ELLIPSE_W, ELLIPSE_W);
     drawDirectionalIndicator();
   }
-  
-  private void drawDirectionalIndicator(){
+
+  private void drawDirectionalIndicator() {
     switch(direction) {
     case 0://up
       line(x+playerW/2, y, x+playerW/2, y-5);
@@ -157,7 +160,7 @@ public class Player {
       //opponent.health = data[10];
     }
     catch(ArrayIndexOutOfBoundsException e) {
-      if(DEBUG) println("ArrayIndexOutOfBoundsException");
+      if (DEBUG) println("ArrayIndexOutOfBoundsException");
     }
   }
 
@@ -168,8 +171,8 @@ public class Player {
     if (movementDirection == 0) {
       if (y == opponentMan.y+opponentMan.playerW) {
         if ((x >= opponentMan.x && x < opponentMan.x+opponentMan.playerW) ||
-        (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
-        (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
+          (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
+          (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -180,8 +183,8 @@ public class Player {
     } else if (movementDirection == 1) {
       if (y+playerW == opponentMan.y) {
         if ((x >= opponentMan.x && x < opponentMan.x+opponentMan.playerW) ||
-        (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
-        (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
+          (x+playerW>opponentMan.x && x+playerW<=opponentMan.x+opponentMan.playerW) ||
+          (x<opponentMan.x && x < opponentMan.x+opponentMan.playerW && x+playerW>opponentMan.x && x+playerW>opponentMan.x+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -190,8 +193,8 @@ public class Player {
     } else if (movementDirection == 2) {
       if (x == opponentMan.x+opponentMan.playerW) {
         if ((y >= opponentMan.y && y < opponentMan.y+opponentMan.playerW) ||
-        (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
-        (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
+          (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
+          (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -201,8 +204,8 @@ public class Player {
     } else if (movementDirection == 3) {
       if (x+playerW == opponentMan.x) {
         if ((y >= opponentMan.y && y < opponentMan.y+opponentMan.playerW) ||
-        (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
-        (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
+          (y+playerW>opponentMan.y && y+playerW <= opponentMan.y+opponentMan.playerW) ||
+          (y<opponentMan.y && y < opponentMan.y+opponentMan.playerW && y+playerW>opponentMan.y && y+playerW>opponentMan.y+opponentMan.playerW)) {
           isLegal = false;
         }
       }
@@ -211,7 +214,7 @@ public class Player {
       direction = 3;
     }
   }
-  
+
   private void playerShot() {
     if (shotFired == 0) {
       switch(direction) {
@@ -256,7 +259,7 @@ public class Player {
   public void setOpponent(Player opponent1) {
     this.opponentMan = opponent1;
   }
-  
+
   public void setOpponent(Player o1, Player o2) {
     opponentTeam[0] = o1;
     opponentTeam[1] = o2;
@@ -272,16 +275,15 @@ public class Player {
       x = startX;
       y = startY;
       direction = startDirection;
-    }
-    else
+    } else
     {
       x = gunnerStartX;
       y = gunnerStartY;
       direction = gunnerStartDirection;
     }
   }
-  
-  public String getData(){
+
+  public String getData() {
     return (x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
   }
 }
