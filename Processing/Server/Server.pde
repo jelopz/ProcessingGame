@@ -9,8 +9,6 @@ Client c;
 String input;
 int data[];
 
-int boxW = 30;
-
 //TODO:
 //
 //Make the weaker player a circle instead of a square
