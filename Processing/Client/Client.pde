@@ -47,7 +47,7 @@ void draw() {
   stroke(125);
   fill(125);
   //send info to server
-  player.render(0);
+  player.render();
   //recieve info from server/opponent here
   if (c.available() > 0) {
     try {
@@ -65,7 +65,7 @@ void draw() {
     //draw information from server
   }
 
-  opponent.render(1);
+  opponent.render();
 
   if (gameOver) {
     stroke(0);

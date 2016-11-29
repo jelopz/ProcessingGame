@@ -4,6 +4,7 @@ public class Player {
   private final int ELLIPSE_W = 15;
 
   Player opponentMan;
+  Player opponentTeam[] = new Player[2];
 
   private int playerW;
   private int health;
@@ -24,6 +25,8 @@ public class Player {
 
   private boolean restart = false;
 
+  private boolean isTeam;
+
   public Player(int x, int y, int direction, boolean isBox) {
     this.x = x;
     this.y = y;
@@ -31,16 +34,21 @@ public class Player {
     health = 3;
     hits = 0;
 
-    if (isBox) playerW = BOX_W;
-    else playerW = ELLIPSE_W;
+    if (isBox) {
+      playerW = BOX_W;
+      isTeam = false;
+    } else {
+      playerW = ELLIPSE_W;
+      isTeam = true;
+    }
 
     ellipseMode(CORNER);
   }
 
-  private void render(int player) { //parameter is 0 if drawing player, 1 if drawing opponent
+  private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
     //    println(player + " health " + health);
-    if (!(player == 1)) drawCircle();
-    if (shotFired == 1) drawShot(player);
+    if (isTeam) drawCircle();
+    if (shotFired == 1) drawShot();
     if (soundPulsing) drawSound();
   }
 
@@ -53,14 +61,7 @@ public class Player {
     ellipseMode(CORNER);
   }
 
-  private void drawShot(int player) {
-    if (!soundPulsing) {
-      pulseCenterX = projectileStartX;
-      pulseCenterY = projectileStartY;
-      pulseEllipseD = 5;
-      soundPulsing = true;
-    }
-    if (!(player == 1)) line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
+  private void updateShot() {
     switch(projectileDirection) {
     case 0://up
       projectileStartX = projectileEndX;
@@ -85,13 +86,14 @@ public class Player {
     default:
       break;
     }
+  }
 
-
+  private void checkShotCollision() {
     if (projectileStartX <= opponentMan.x+opponentMan.playerW && projectileStartX >= opponentMan.x) {
       if (projectileStartY <= opponentMan.y+opponentMan.playerW && projectileStartY >= opponentMan.y) {
         shotFired = 0;
         soundPulsing = false;
-        if (player == 0) {
+        if (isTeam) {
           if (DEBUG) println("You hit the enemy");
           if (DEBUG) println("You win");
           gameOver = true;
@@ -121,6 +123,19 @@ public class Player {
       shotFired = 0;
       soundPulsing = false;
     }
+  }
+
+  private void drawShot() {
+    if (!soundPulsing) {
+      pulseCenterX = projectileStartX;
+      pulseCenterY = projectileStartY;
+      pulseEllipseD = 5;
+      soundPulsing = true;
+    }
+
+    line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
+    updateShot();
+    checkShotCollision();
   }
 
   private void drawBox() {
@@ -155,7 +170,7 @@ public class Player {
   private void update(int movementDirection) {
     if (movementDirection != 9) {
       move(movementDirection);
-    } else updateShot();
+    } else playerShot();
   }
 
   private void clientUpdate(int data[]) {
@@ -229,7 +244,7 @@ public class Player {
   }
 
 
-  private void updateShot() {
+  private void playerShot() {
     if (shotFired == 0) {
       switch(direction) {
       case 0://up
@@ -272,6 +287,11 @@ public class Player {
 
   private void setOpponent(Player opponent1) {
     this.opponentMan = opponent1;
+  }
+
+  public void setOpponent(Player o1, Player o2) {
+    opponentTeam[0] = o1;
+    opponentTeam[1] = o2;
   }
 
   public void restart() {
