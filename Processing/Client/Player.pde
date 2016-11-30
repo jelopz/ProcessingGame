@@ -5,8 +5,8 @@ public class Player {
 
   private final int FLARE_DURATION = 5;
   private final int FLARE_CD = 10;
-  private final int FLARE_VISION_RANGE = 15;
-  private final int FLARE_THROW_RANGE = 150;
+  private final int FLARE_VISION_RANGE = 60;
+  private final int FLARE_THROW_RANGE = 125;
 
   Player opponentMan;
   Player opponentTeam[] = new Player[2];
@@ -23,6 +23,7 @@ public class Player {
 
   private int flareX, flareY;
   private int flareCD, flareMillis;
+  private boolean flareActive;
 
   private boolean soundPulsing;
   private int pulseCenterX;
@@ -43,6 +44,7 @@ public class Player {
     hits = 0;
 
     flareCD = FLARE_CD*1000;
+    flareActive = false;
 
     if (isBox) {
       playerW = BOX_W;
@@ -56,25 +58,45 @@ public class Player {
   }
 
   private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
-    //    println(player + " health " + health);
-    if (isTeam) drawCircle();
     //update flare cds and handle flare accordingly
     if (flareCD < FLARE_CD*1000) {
       flareCD = millis() - flareMillis;
+      if (flareCD < (FLARE_CD - FLARE_DURATION)*1000) {
+        flareActive = true;
+        drawFlare();
+      } else flareActive = false;
     }
-    if (flareCD < (FLARE_CD - FLARE_DURATION)*1000) drawFlare();
+
+    if (opponentMan.flareActive && isRevealed(opponentMan) && !isTeam) {
+      drawBox();
+    }
+
+    //    println(player + " health " + health);
+    if (isTeam) drawCircle();
+
     if (shotFired == 1) drawShot();
     if (soundPulsing) drawSound();
+  }
 
-    //    if (DEBUG && isTeam) println(flareCD);
+  private boolean isRevealed(Player opp) {
+    if (isPointInFlare(opp, x, y) || isPointInFlare(opp, x+playerW, y) ||
+      isPointInFlare(opp, x, y+playerW) || isPointInFlare(opp, x+playerW, y+playerW)) return true;
+    else return false;
+  }
+
+  private boolean isPointInFlare(Player opp, int px, int py) {
+    if (px >= opp.flareX && px <= opp.flareX+FLARE_VISION_RANGE &&
+      py >= opp.flareY && py <= opp.flareY+FLARE_VISION_RANGE) return true;
+    else return false;
   }
 
   private void drawFlare() {
-    rectMode(RADIUS);
-    stroke(0, 255, 0);
-    noFill();
-    rect(flareX, flareY, FLARE_VISION_RANGE, FLARE_VISION_RANGE);
+    pushStyle();
     rectMode(CORNER);
+    stroke(235, 116, 19);
+    fill(235, 116, 19);
+    rect(flareX, flareY, FLARE_VISION_RANGE, FLARE_VISION_RANGE);
+    popStyle();
   }
 
   private void drawSound() {
@@ -172,14 +194,18 @@ public class Player {
       soundPulsing = true;
     }
 
-    line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
+    if (isTeam) line(projectileStartX, projectileStartY, projectileEndX, projectileEndY);
     updateShot();
     checkShotCollision();
   }
 
   private void drawBox() {
+    pushStyle();
+    noStroke();
+    fill(255, 0, 0);
     rect(x, y, BOX_W, BOX_W);
     drawDirectionalIndicator();
+    popStyle();
   }
 
   private void drawCircle() {
@@ -306,20 +332,20 @@ public class Player {
     if (flareCD >= FLARE_CD*1000) {
       switch(direction) {
       case 0: //up
-        flareX = x + playerW/2;
-        flareY = y + playerW/2 - FLARE_THROW_RANGE;
+        flareX = x - 15;
+        flareY = y - FLARE_THROW_RANGE;
         break;
       case 1: //down
-        flareX = x + playerW/2;
-        flareY = y + playerW/2 + FLARE_THROW_RANGE;
+        flareX = x - 15;
+        flareY = y + FLARE_THROW_RANGE;
         break;
       case 2: //left
-        flareX = x + playerW/2 - FLARE_THROW_RANGE;
-        flareY = y + playerW/2;
+        flareX = x - FLARE_THROW_RANGE;
+        flareY = y - 15;
         break;
       case 3: //right
-        flareX = x + playerW/2 + FLARE_THROW_RANGE;
-        flareY = y + playerW/2;
+        flareX = x + FLARE_THROW_RANGE;
+        flareY = y - 15;
         break;
       default:
         break;

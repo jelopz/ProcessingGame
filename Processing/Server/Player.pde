@@ -5,8 +5,8 @@ public class Player {
 
   private final int FLARE_DURATION = 5;
   private final int FLARE_CD = 10;
-  private final int FLARE_VISION_RANGE = 15;
-  private final int FLARE_THROW_RANGE = 150;
+  private final int FLARE_VISION_RANGE = 60;
+  private final int FLARE_THROW_RANGE = 125;
 
   Player opponentMan;
   Player opponentTeam[] = new Player[2];
@@ -60,7 +60,7 @@ public class Player {
 
     if (shotFired == 1) drawShot();
 
-    if(DEBUG) println(flareCD);
+//    if(DEBUG) println(flareCD);
   }
 
   private void updateShot() {
@@ -148,11 +148,11 @@ public class Player {
   }
 
   private void drawFlare() {
-    rectMode(RADIUS);
+//    rectMode(RADIUS);
     stroke(0, 255, 0);
     noFill();
     rect(flareX, flareY, FLARE_VISION_RANGE, FLARE_VISION_RANGE);
-    rectMode(CORNER);
+//    rectMode(CORNER);
   }
 
   private void drawBox() {
@@ -287,20 +287,20 @@ public class Player {
     if (flareCD >= FLARE_CD*1000) {
       switch(direction) {
       case 0: //up
-        flareX = x + playerW/2;
-        flareY = y + playerW/2 - FLARE_THROW_RANGE;
+        flareX = x - 15;
+        flareY = y - FLARE_THROW_RANGE;
         break;
       case 1: //down
-        flareX = x + playerW/2;
-        flareY = y + playerW/2 + FLARE_THROW_RANGE;
+        flareX = x - 15;
+        flareY = y + FLARE_THROW_RANGE;
         break;
       case 2: //left
-        flareX = x + playerW/2 - FLARE_THROW_RANGE;
-        flareY = y + playerW/2;
+        flareX = x - FLARE_THROW_RANGE;
+        flareY = y - 15;
         break;
       case 3: //right
-        flareX = x + playerW/2 + FLARE_THROW_RANGE;
-        flareY = y + playerW/2;
+        flareX = x + FLARE_THROW_RANGE;
+        flareY = y - 15;
         break;
       default:
         break;
