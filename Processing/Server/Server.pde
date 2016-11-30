@@ -60,12 +60,12 @@ void draw() {
       input = c.readString();
       input = input.substring(0, input.indexOf("\n")); // only up to the newline
       data = int(split(input, ' ')); // split values into an array
-      if(DEBUG) println("data.length: " + data.length);
+      if (DEBUG) println("data.length: " + data.length);
       if (data.length > 1) gunner.clientUpdate(data);
       else gunner.restart();
     }
     catch(StringIndexOutOfBoundsException e) {
-      if(DEBUG) println("woops"); //something went wrong
+      if (DEBUG) println("woops"); //something went wrong
     }
     //draw information from client
   }
@@ -120,6 +120,10 @@ void keyPressed() {
     s.write("1\n"); //inform other players we are ready
     if (!gunner.restart) waiting = true;
     else reset();
+  }
+  if (key == 'z' && gameOver == false && waiting == false) {
+    //throwFlare
+    player.update(8);
   }
 
   if (!gameOver && !waiting) sendData();
