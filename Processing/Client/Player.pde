@@ -3,6 +3,11 @@ public class Player {
   private final int BOX_W = 30;
   private final int ELLIPSE_W = 15;
 
+  private final int FLARE_DURATION = 5;
+  private final int FLARE_CD = 10;
+  private final int FLARE_VISION_RANGE = 15;
+  private final int FLARE_THROW_RANGE = 150;
+
   Player opponentMan;
   Player opponentTeam[] = new Player[2];
 
@@ -15,6 +20,9 @@ public class Player {
   private int projectileStartX, projectileStartY;
   private int projectileEndX, projectileEndY;
   private int shotFired;
+
+  private int flareX, flareY;
+  private int flareCD, flareMillis;
 
   private boolean soundPulsing;
   private int pulseCenterX;
@@ -34,6 +42,8 @@ public class Player {
     health = 3;
     hits = 0;
 
+    flareCD = FLARE_CD*1000;
+
     if (isBox) {
       playerW = BOX_W;
       isTeam = false;
@@ -48,8 +58,23 @@ public class Player {
   private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
     //    println(player + " health " + health);
     if (isTeam) drawCircle();
+    //update flare cds and handle flare accordingly
+    if (flareCD < FLARE_CD*1000) {
+      flareCD = millis() - flareMillis;
+    }
+    if (flareCD < (FLARE_CD - FLARE_DURATION)*1000) drawFlare();
     if (shotFired == 1) drawShot();
     if (soundPulsing) drawSound();
+
+    //    if (DEBUG && isTeam) println(flareCD);
+  }
+
+  private void drawFlare() {
+    rectMode(RADIUS);
+    stroke(0, 255, 0);
+    noFill();
+    rect(flareX, flareY, FLARE_VISION_RANGE, FLARE_VISION_RANGE);
+    rectMode(CORNER);
   }
 
   private void drawSound() {
@@ -182,9 +207,20 @@ public class Player {
   }
 
   private void update(int movementDirection) {
-    if (movementDirection != 9) {
+    if (movementDirection < 5) {
       move(movementDirection);
-    } else playerShot();
+    } else {
+      switch(movementDirection) {
+      case 8:
+        throwFlare();
+        break;
+      case 9:
+        playerShot();
+        break;
+      default:
+        break;
+      }
+    }
   }
 
   private void clientUpdate(int data[]) {
@@ -254,6 +290,43 @@ public class Player {
 
       if (isLegal && x != windowWidth - playerW) x+=5;
       direction = 3;
+    }
+  }
+
+  private void throwFlare() {
+    //case n:
+    //determine flares ending location based on players position and direction they are facing
+    //ref:
+    //private final int FLARE_CD = 5;
+    //private final int FLARE_VISION_RANGE = 20;
+    //private final int FLARE_THROW_RANGE = 20;
+    //private int flareX, flareY;
+    //private int flareCD;
+
+    if (flareCD >= FLARE_CD*1000) {
+      switch(direction) {
+      case 0: //up
+        flareX = x + playerW/2;
+        flareY = y + playerW/2 - FLARE_THROW_RANGE;
+        break;
+      case 1: //down
+        flareX = x + playerW/2;
+        flareY = y + playerW/2 + FLARE_THROW_RANGE;
+        break;
+      case 2: //left
+        flareX = x + playerW/2 - FLARE_THROW_RANGE;
+        flareY = y + playerW/2;
+        break;
+      case 3: //right
+        flareX = x + playerW/2 + FLARE_THROW_RANGE;
+        flareY = y + playerW/2;
+        break;
+      default:
+        break;
+      }
+
+      flareCD = 0;
+      flareMillis = millis();
     }
   }
 

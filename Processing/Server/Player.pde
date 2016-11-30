@@ -60,7 +60,7 @@ public class Player {
 
     if (shotFired == 1) drawShot();
 
-    println(flareCD);
+    if(DEBUG) println(flareCD);
   }
 
   private void updateShot() {

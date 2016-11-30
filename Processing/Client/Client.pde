@@ -54,12 +54,12 @@ void draw() {
       input = c.readString();
       input = input.substring(0, input.indexOf("\n")); // only up to the newline
       data = int(split(input, ' ')); // split values into an array
-      if(DEBUG) println("data.length: " + data.length);
+      if (DEBUG) println("data.length: " + data.length);
       if (data.length > 1) opponent.clientUpdate(data);
       else opponent.restart();
     }
     catch(StringIndexOutOfBoundsException e) {
-      if(DEBUG) println("woops"); //something went wrong
+      if (DEBUG) println("woops"); //something went wrong
     }
 
     //draw information from server
@@ -112,6 +112,10 @@ void keyPressed() {
     c.write("1\n"); //inform other players we are ready
     if (!opponent.restart) waiting = true; //we are waiting for players
     else reset();
+  }
+  if (key == 'z' && gameOver == false && waiting == false) {
+    //throwFlare
+    player.update(8);
   }
 
   if (!gameOver && !waiting) sendData();
