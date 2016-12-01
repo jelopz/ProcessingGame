@@ -110,24 +110,101 @@ public class Player {
           visiblePoints[3] = y;
 
           visiblePoints[4] = x;
-          visiblePoints[5] = y+playerW;
+          visiblePoints[5] = flareY + FLARE_VISION_RANGE;
 
           visiblePoints[6] = x+playerW;
-          visiblePoints[7] = y+playerW;
+          visiblePoints[7] = flareY + FLARE_VISION_RANGE;
         }
       } else if (swRevealed) { //(nw, sw) only left two corners are visible. right of flare.
+          visiblePoints[0] = x;
+          visiblePoints[1] = y;
+
+          visiblePoints[2] = flareX + FLARE_VISION_RANGE;
+          visiblePoints[3] = y;
+
+          visiblePoints[4] = x;
+          visiblePoints[5] = y+playerW;
+
+          visiblePoints[6] = flareX + FLARE_VISION_RANGE;
+          visiblePoints[7] = y + playerW;
       } else //(nw) //only the top left corner is visible. bottom right of flare
       {
+          visiblePoints[0] = x;
+          visiblePoints[1] = y;
+
+          visiblePoints[2] = flareX + FLARE_VISION_RANGE;
+          visiblePoints[3] = y;
+
+          visiblePoints[4] = x;
+          visiblePoints[5] = flareY + FLARE_VISION_RANGE;
+
+          visiblePoints[6] = flareX + FLARE_VISION_RANGE;
+          visiblePoints[7] = flareY + FLARE_VISION_RANGE;
       }
     } else if (neRevealed) {
       if (seRevealed) { //(ne, se) only right two corners are visible. left of flare
+          visiblePoints[0] = flareX;
+          visiblePoints[1] = y;
+
+          visiblePoints[2] = x + playerW;
+          visiblePoints[3] = y;
+
+          visiblePoints[4] = flareX;
+          visiblePoints[5] = y + playerW;
+
+          visiblePoints[6] = x + playerW;
+          visiblePoints[7] = y + playerW;
       } else { //(ne) top left corner is visible. bottom left of flare
+          visiblePoints[0] = flareX;
+          visiblePoints[1] = y;
+
+          visiblePoints[2] = x + playerW;
+          visiblePoints[3] = y;
+
+          visiblePoints[4] = flareX;
+          visiblePoints[5] = flareY + FLARE_VISION_RANGE;
+
+          visiblePoints[6] = x + playerW;
+          visiblePoints[7] = flareY + FLARE_VISION_RANGE;
       }
     } else if (swRevealed) {
       if (seRevealed) { //(sw, se) bottom two corners are visible. top of flare
+          visiblePoints[0] = x;
+          visiblePoints[1] = flareY;
+
+          visiblePoints[2] = x + playerW;
+          visiblePoints[3] = flareY;
+
+          visiblePoints[4] = x;
+          visiblePoints[5] = y + playerW;
+
+          visiblePoints[6] = x + playerW;
+          visiblePoints[7] = y + playerW;
       } else { //(sw) //bottom left corner is visible. top right of flare
+          visiblePoints[0] = x;
+          visiblePoints[1] = flareY;
+
+          visiblePoints[2] = flareX + FLARE_VISION_RANGE;
+          visiblePoints[3] = flareY;
+
+          visiblePoints[4] = x;
+          visiblePoints[5] = y + playerW;
+
+          visiblePoints[6] = flareX + FLARE_VISION_RANGE;
+          visiblePoints[7] = y + playerW;
       }
     } else { //(se) bottom right corner is visible. top left of flare
+          visiblePoints[0] = flareX;
+          visiblePoints[1] = flareY;
+
+          visiblePoints[2] = x + playerW;
+          visiblePoints[3] = flareY;
+
+          visiblePoints[4] = flareX;
+          visiblePoints[5] = y + playerW;
+
+          visiblePoints[6] = x + playerW;
+          visiblePoints[7] = y + playerW;
     }
   }
 
