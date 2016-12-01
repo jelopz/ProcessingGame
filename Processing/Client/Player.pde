@@ -25,6 +25,9 @@ public class Player {
   private int flareCD, flareMillis;
   private boolean flareActive;
 
+  private boolean nwRevealed, neRevealed, swRevealed, seRevealed;
+  private int[] visiblePoints = new int[8];
+
   private boolean soundPulsing;
   private int pulseCenterX;
   private int pulseCenterY;
@@ -67,7 +70,9 @@ public class Player {
       } else flareActive = false;
     }
 
-    if (opponentMan.flareActive && isRevealed(opponentMan) && !isTeam) {
+    if (opponentMan.flareActive && !isTeam && isRevealed(opponentMan)) {
+      //determineVisibleBoxCoordinates()
+      //drawVisibleBoxCoordinates()
       drawBox();
     }
 
@@ -78,9 +83,61 @@ public class Player {
     if (soundPulsing) drawSound();
   }
 
+  private void determineVisibleEnemyCoordinates() {
+    //set S: nw, ne, sw, se
+    //set C: (nw)1, (ne)1, (sw)1, (se)1, (nw, ne)1, (nw, sw)1, (sw, se)1, (ne, se)1, (nw, ne, sw, se)1
+    //set C is all the legal combinations of set S. Size 9
+
+    if (nwRevealed) {
+      if (neRevealed) {
+        if (swRevealed) { //(nw, ne, sw, se) draw whole box
+          visiblePoints[0] = x;
+          visiblePoints[1] = y;
+
+          visiblePoints[2] = x+playerW;
+          visiblePoints[3] = y;
+
+          visiblePoints[4] = x;
+          visiblePoints[5] = y+playerW;
+
+          visiblePoints[6] = x+playerW;
+          visiblePoints[7] = y+playerW;
+        } else { //(nw, ne) only top two corners are visible. bottom is outside flare aoe
+          visiblePoints[0] = x;
+          visiblePoints[1] = y;
+
+          visiblePoints[2] = x+playerW;
+          visiblePoints[3] = y;
+
+          visiblePoints[4] = x;
+          visiblePoints[5] = y+playerW;
+
+          visiblePoints[6] = x+playerW;
+          visiblePoints[7] = y+playerW;
+        }
+      } else if (swRevealed) { //(nw, sw) only left two corners are visible. right of flare.
+      } else //(nw) //only the top left corner is visible. bottom right of flare
+      {
+      }
+    } else if (neRevealed) {
+      if (seRevealed) { //(ne, se) only right two corners are visible. left of flare
+      } else { //(ne) top left corner is visible. bottom left of flare
+      }
+    } else if (swRevealed) {
+      if (seRevealed) { //(sw, se) bottom two corners are visible. top of flare
+      } else { //(sw) //bottom left corner is visible. top right of flare
+      }
+    } else { //(se) bottom right corner is visible. top left of flare
+    }
+  }
+
   private boolean isRevealed(Player opp) {
-    if (isPointInFlare(opp, x, y) || isPointInFlare(opp, x+playerW, y) ||
-      isPointInFlare(opp, x, y+playerW) || isPointInFlare(opp, x+playerW, y+playerW)) return true;
+    nwRevealed = isPointInFlare(opp, x, y);
+    neRevealed = isPointInFlare(opp, x+playerW, y);
+    swRevealed = isPointInFlare(opp, x, y+playerW);
+    seRevealed = isPointInFlare(opp, x+playerW, y+playerW);
+
+    if (nwRevealed || neRevealed || swRevealed || seRevealed) return true;
     else return false;
   }
 
