@@ -9,11 +9,6 @@ For now, the Server class acts as Player 1 and the Client class acts as Player 2
 TODO:
 
 1. Add a third player.   - One all knowing player vs team of 2
-2. Add extra functionality to team of 2.
-
-  a) Wards/flairs that light up a portion of the screen. This lets you know where the oppenent is or is not.
-    
-  b) Maybe one person has a more powerful machinegun while the other has the ability to heal.
 3. More classes? Check out Evolve for more potential ideas.
 4. Brainstorm
 
