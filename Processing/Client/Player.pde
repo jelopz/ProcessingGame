@@ -7,6 +7,9 @@ public class Player {
   private final int FLARE_CD = 10;
   private final int FLARE_VISION_RANGE = 60;
   private final int FLARE_THROW_RANGE = 125;
+  private final int FLARE_CAST_TIME = 1;
+  private final int FLARE_PROJECTILE_BASE_SIZE = 1;
+  private final int FLARE_PROJECTILE_SPEED = 2;
 
   Player opponentMan;
   Player opponentTeam[] = new Player[2];
@@ -24,6 +27,10 @@ public class Player {
   private int flareX, flareY;
   private int flareCD, flareMillis;
   private boolean flareActive;
+
+  private int flareProjectileDirection;
+  private int flareProjectileX, flareProjectileY, flareProjectileSize;
+  private boolean flareProjectileActive;
 
   private boolean nwRevealed, neRevealed, swRevealed, seRevealed;
   private int[] visiblePoints = new int[8];
@@ -48,6 +55,7 @@ public class Player {
 
     flareCD = FLARE_CD*1000;
     flareActive = false;
+    flareProjectileActive = false;
 
     if (isBox) {
       playerW = BOX_W;
@@ -65,8 +73,21 @@ public class Player {
     if (flareCD < FLARE_CD*1000) {
       flareCD = millis() - flareMillis;
       if (flareCD < (FLARE_CD - FLARE_DURATION)*1000) {
-        flareActive = true;
-        drawFlare();
+        //flare cast animation
+        if (flareCD < FLARE_CAST_TIME*1000)
+        {
+          flareProjectileActive = true;
+          flareActive = false;
+          if (flareCD < FLARE_CAST_TIME*1000/2) { //draw flare going up
+            drawFlareAnimation(true);
+          } else { //draw flare going down
+            drawFlareAnimation(false);
+          }
+        } else {
+          flareProjectileActive = false;
+          flareActive = true;
+          drawFlare();
+        }
       } else flareActive = false;
     }
 
@@ -81,6 +102,37 @@ public class Player {
 
     if (shotFired == 1) drawShot();
     if (soundPulsing) drawSound();
+  }
+
+  private void drawFlareAnimation(boolean isFirstHalf) { //is first half of animation or second half?
+    pushStyle();
+    ellipseMode(RADIUS);
+    fill(255, 0, 0);
+    ellipse(flareProjectileX, flareProjectileY, flareProjectileSize, flareProjectileSize);
+    popStyle();
+
+    if (isFirstHalf) {
+      flareProjectileSize++;
+    } else {
+      flareProjectileSize--;
+    }
+
+    switch(flareProjectileDirection) {
+    case 0: //up
+      flareProjectileY-=FLARE_PROJECTILE_SPEED;
+      break;
+    case 1: //down
+      flareProjectileY+=FLARE_PROJECTILE_SPEED;
+      break;
+    case 2: //left
+      flareProjectileX-=FLARE_PROJECTILE_SPEED;
+      break;
+    case 3: //right
+      flareProjectileX+=FLARE_PROJECTILE_SPEED;
+      break;
+    default:
+      break;
+    }
   }
 
   private void determineVisibleEnemyCoordinates(Player opp) {
@@ -471,31 +523,37 @@ public class Player {
     //private final int FLARE_THROW_RANGE = 20;
     //private int flareX, flareY;
     //private int flareCD;
+    if (!flareProjectileActive) {
+      flareProjectileSize = FLARE_PROJECTILE_BASE_SIZE;
+      flareProjectileX = x + playerW;
+      flareProjectileY = y + playerW;
+      flareProjectileDirection = direction;
 
-    if (flareCD >= FLARE_CD*1000) {
-      switch(direction) {
-      case 0: //up
-        flareX = x - 15;
-        flareY = y - FLARE_THROW_RANGE;
-        break;
-      case 1: //down
-        flareX = x - 15;
-        flareY = y + FLARE_THROW_RANGE;
-        break;
-      case 2: //left
-        flareX = x - FLARE_THROW_RANGE;
-        flareY = y - 15;
-        break;
-      case 3: //right
-        flareX = x + FLARE_THROW_RANGE;
-        flareY = y - 15;
-        break;
-      default:
-        break;
+      if (flareCD >= FLARE_CD*1000) {
+        switch(direction) {
+        case 0: //up
+          flareX = x - 15;
+          flareY = y - FLARE_THROW_RANGE;
+          break;
+        case 1: //down
+          flareX = x - 15;
+          flareY = y + FLARE_THROW_RANGE;
+          break;
+        case 2: //left
+          flareX = x - FLARE_THROW_RANGE;
+          flareY = y - 15;
+          break;
+        case 3: //right
+          flareX = x + FLARE_THROW_RANGE;
+          flareY = y - 15;
+          break;
+        default:
+          break;
+        }
+
+        flareCD = 0;
+        flareMillis = millis();
       }
-
-      flareCD = 0;
-      flareMillis = millis();
     }
   }
 
