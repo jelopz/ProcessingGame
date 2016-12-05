@@ -106,7 +106,7 @@ public class Player {
 
   private void drawFlareAnimation(boolean isFirstHalf) { //is first half of animation or second half?
     pushStyle();
-    ellipseMode(RADIUS);
+    ellipseMode(CORNER);
     fill(255, 0, 0);
     ellipse(flareProjectileX, flareProjectileY, flareProjectileSize, flareProjectileSize);
     popStyle();
@@ -133,6 +133,11 @@ public class Player {
     default:
       break;
     }
+
+    if (flareProjectileX < WINDOW_X) flareProjectileX = WINDOW_X;
+    else if (flareProjectileX + flareProjectileSize > WINDOW_X+WINDOW_WIDTH) flareProjectileX = WINDOW_X+WINDOW_WIDTH - flareProjectileSize;
+    if (flareProjectileY < WINDOW_Y) flareProjectileY = WINDOW_Y;
+    else if (flareProjectileY + flareProjectileSize > WINDOW_Y+WINDOW_WIDTH) flareProjectileY = WINDOW_Y+WINDOW_HEIGHT - flareProjectileSize;
   }
 
   private void determineVisibleEnemyCoordinates(Player opp) {
@@ -351,11 +356,11 @@ public class Player {
   }
 
   private void checkShotCollisionForBoundaries() {
-    if (projectileStartX <= 0 || projectileStartX >= windowWidth) {
+    if (projectileStartX <= WINDOW_X || projectileStartX >= WINDOW_WIDTH + WINDOW_X) {
       shotFired = 0;
       soundPulsing = false;
     }
-    if (projectileStartY <= 0 || projectileStartY >= windowHeight) {
+    if (projectileStartY <= WINDOW_Y || projectileStartY >= WINDOW_HEIGHT + WINDOW_Y) {
       shotFired = 0;
       soundPulsing = false;
     }
@@ -476,7 +481,7 @@ public class Player {
         }
       }
 
-      if (isLegal && y != 0) y-=5;
+      if (isLegal && y != WINDOW_Y) y-=5;
 
       direction = 0;
     } else if (movementDirection == 1) {
@@ -487,7 +492,7 @@ public class Player {
           isLegal = false;
         }
       }
-      if (isLegal && y != (windowHeight - playerW)) y+=5;
+      if (isLegal && y != (WINDOW_HEIGHT + WINDOW_Y - playerW)) y+=5;
       direction = 1;
     } else if (movementDirection == 2) {
       if (x == opponentMan.x+opponentMan.playerW) {
@@ -498,7 +503,7 @@ public class Player {
         }
       }
 
-      if (isLegal && x != 0) x-=5;
+      if (isLegal && x != WINDOW_X) x-=5;
       direction = 2;
     } else if (movementDirection == 3) {
       if (x+playerW == opponentMan.x) {
@@ -509,7 +514,7 @@ public class Player {
         }
       }
 
-      if (isLegal && x != windowWidth - playerW) x+=5;
+      if (isLegal && x != WINDOW_WIDTH + WINDOW_X - playerW) x+=5;
       direction = 3;
     }
   }
@@ -528,6 +533,9 @@ public class Player {
       flareProjectileX = x + playerW;
       flareProjectileY = y + playerW;
       flareProjectileDirection = direction;
+
+      //      if (flareProjectileX < WINDOW_X) flareProjectileX = 0;
+      //      if (flareProjectileX > WINDOW_X + WINDOW_WIDTH) flareProjectileX = WINDOW_WIDTH + WINDOW_X - FLARE_PROJECTILE_RANGE;
 
       if (flareCD >= FLARE_CD*1000) {
         switch(direction) {
@@ -550,6 +558,11 @@ public class Player {
         default:
           break;
         }
+
+        if (flareX < WINDOW_X) flareX = WINDOW_X;
+        else if (flareX + FLARE_VISION_RANGE > WINDOW_X + WINDOW_WIDTH) flareX = WINDOW_X + WINDOW_WIDTH - FLARE_VISION_RANGE;
+        if (flareY < WINDOW_Y) flareY = WINDOW_Y;
+        else if (flareY + FLARE_VISION_RANGE > WINDOW_Y + WINDOW_WIDTH) flareY = WINDOW_Y + WINDOW_WIDTH - FLARE_VISION_RANGE;
 
         flareCD = 0;
         flareMillis = millis();
@@ -615,14 +628,14 @@ public class Player {
   public void reset(int player) {
     this.restart = false;
     if (player == 0) {
-      x = startX;
-      y = startY;
-      direction = startDirection;
+      x = PLAYER1_START_X;
+      y = PLAYER1_START_Y;
+      direction = PLAYER1_START_DIRECTION;
     } else
     {
-      x = opponentStartX;
-      y = opponentStartY;
-      direction = opponentStartDirection;
+      x = PLAYER2_START_X;
+      y = PLAYER2_START_Y;
+      direction = PLAYER2_START_DIRECTION;
     }
   }
 

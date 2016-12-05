@@ -1,23 +1,30 @@
 import processing.net.*;
 
 static final boolean DEBUG = true;
+static final int PLAYER1_START_X= 355;
+static final int PLAYER1_START_Y = 165;
+static final int PLAYER1_START_DIRECTION = 2;
 
-int windowHeight = 400;
-int windowWidth = 400;
+static final int PLAYER2_START_X = 30;
+static final int PLAYER2_START_Y = 150;
+static final int PLAYER2_START_DIRECTION = 3;
+
+static final int PLAYER3_START_X = 30;
+static final int PLAYER3_START_Y = 25;
+static final int PLAYER3_START_DIRECTION = 3;
+
+static final int WINDOW_HEIGHT = 400;
+static final int WINDOW_WIDTH = 400;
+static final int WINDOW_X = 50;
+static final int WINDOW_Y = 50;
 
 processing.net.Client c;
 String input;
 int data[];
 
 Player player;
+Player teammate;
 Player opponent;
-
-int startX = 340 + 15;
-int startY = 150 + 15;
-int startDirection = 2;
-int opponentStartX = 30;
-int opponentStartY = 150;
-int opponentStartDirection = 3;
 
 boolean gameOver = false;
 boolean waiting = false;
@@ -27,15 +34,18 @@ boolean restart = false;
 boolean postGame = false;
 
 void setup() {
-  size(400, 400);
+  size(500, 500);
   background(255);
   stroke(255, 0, 0);
   fill(255, 0, 0);
 
-  player = new Player(startX, startY, startDirection, false);
-  opponent = new Player(opponentStartX, opponentStartY, opponentStartDirection, true);
+  player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false);
+  teammate = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false);
+  opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true);
+
   player.setOpponent(opponent);
-  opponent.setOpponent(player);
+  teammate.setOpponent(opponent);
+ opponent.setOpponent(player); // will need to update
 
   c = new processing.net.Client(this, "127.0.0.1", 12345);
 }
@@ -43,6 +53,11 @@ void setup() {
 void draw() {
   //  clear();
   background(0);  
+  pushStyle();
+  noFill();
+  stroke(255,0,0);
+  rect(WINDOW_X, WINDOW_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
+  popStyle();
 
   stroke(125);
   fill(125);
@@ -107,13 +122,13 @@ void keyPressed() {
   if (key == ' ' && gameOver == false && waiting == false) {
     player.update(9);
   }
-  if (key == 's' && gameOver == true) { //we readied up
+  if ((key == 's' || key == 'S') && gameOver == true) { //we readied up
     player.restart();
     c.write("1\n"); //inform other players we are ready
     if (!opponent.restart) waiting = true; //we are waiting for players
     else reset();
   }
-  if (key == 'z' && gameOver == false && waiting == false) {
+  if ((key == 'z' || key == 'Z') && gameOver == false && waiting == false) {
     //throwFlare
     player.update(8);
   }
