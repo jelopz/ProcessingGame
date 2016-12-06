@@ -73,8 +73,10 @@ void draw() {
       input = input.substring(0, input.indexOf("\n")); // only up to the newline
       data = int(split(input, ' ')); // split values into an array
       if (DEBUG) println("data.length: " + data.length);
-      if (data.length > 1) gunner.clientUpdate(data);
-      else gunner.restart();
+      if (data.length > 1) {
+        if (data[0] == 2) gunner.clientUpdate(data);
+        else if (data[0] == 3) healer.clientUpdate(data);
+      } else gunner.restart();
     }
     catch(StringIndexOutOfBoundsException e) {
       if (DEBUG) println("woops"); //something went wrong

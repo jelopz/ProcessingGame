@@ -213,15 +213,15 @@ public class Player {
 
   private void clientUpdate(int data[]) {
     try {
-      x = data[0];
-      y = data[1];
-      direction = data[2];
-      projectileStartX = data[3];
-      projectileStartY = data[4];
-      projectileEndX = data[5];
-      projectileEndY = data[6];
-      shotFired = data[7];
-      projectileDirection = data[8];
+      x = data[1];
+      y = data[2];
+      direction = data[3];
+      projectileStartX = data[4];
+      projectileStartY = data[5];
+      projectileEndX = data[6];
+      projectileEndY = data[7];
+      shotFired = data[8];
+      projectileDirection = data[9];
       //      restart = data[9];
       //health = data[9];
       //opponent.health = data[10];
@@ -402,6 +402,6 @@ public class Player {
   }
 
   public String getData() {
-    return (x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
+    return ("1 " + x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
   }
 }

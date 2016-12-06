@@ -42,13 +42,14 @@ void setup() {
 
   player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false);
   teammate = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false);
-  
+
   opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true);
 
   player.setOpponent(opponent);
   teammate.setOpponent(opponent);
-  
-  opponent.setOpponent(player); // will need to update
+
+  //    opponent.setOpponent(player); // will need to update
+  opponent.setOpponent(player, teammate);
 
   c = new processing.net.Client(this, "127.0.0.1", 12345);
 }
@@ -73,8 +74,10 @@ void draw() {
       input = input.substring(0, input.indexOf("\n")); // only up to the newline
       data = int(split(input, ' ')); // split values into an array
       if (DEBUG) println("data.length: " + data.length);
-      if (data.length > 1) opponent.clientUpdate(data);
-      else opponent.restart();
+      if (data.length > 1) { 
+        if(data[0] == 1) opponent.clientUpdate(data);
+        else if (data[0] == 3) {} //do something
+      } else opponent.restart();
     }
     catch(StringIndexOutOfBoundsException e) {
       if (DEBUG) println("woops"); //something went wrong
@@ -84,7 +87,7 @@ void draw() {
   }
 
   opponent.render();
-  
+
   teammate.render();
 
   if (gameOver) {

@@ -91,11 +91,23 @@ public class Player {
       } else flareActive = false;
     }
 
-    if (opponentMan.flareActive && !isTeam && isRevealed(opponentMan)) {
-      determineVisibleEnemyCoordinates(opponentMan);
-      drawVisible();
-      //drawBox();
+    //if (opponentMan.flareActive && !isTeam && isRevealed(opponentMan)) {
+    // determineVisibleEnemyCoordinates(opponentMan);
+    // drawVisible();
+    // //drawBox();
+    //}
+
+    //isRevealed(opponentMan) - does opponentMan's flare reveal me?
+    if (!isTeam) {
+     for (int i = 0; i < 2; i++) {
+       if (opponentTeam[i].flareActive && isRevealed(opponentTeam[i])) {
+         determineVisibleEnemyCoordinates(opponentTeam[i]);
+         drawVisible();
+         //drawBox();
+       }
+     }
     }
+
 
     //    println(player + " health " + health);
     //    if (isTeam) drawCircle();
@@ -454,15 +466,15 @@ public class Player {
 
   private void clientUpdate(int data[]) {
     try {
-      x = data[0];
-      y = data[1];
-      direction = data[2];
-      projectileStartX = data[3];
-      projectileStartY = data[4];
-      projectileEndX = data[5];
-      projectileEndY = data[6];
-      shotFired = data[7];
-      projectileDirection = data[8];
+      x = data[1];
+      y = data[2];
+      direction = data[3];
+      projectileStartX = data[4];
+      projectileStartY = data[5];
+      projectileEndX = data[6];
+      projectileEndY = data[7];
+      shotFired = data[8];
+      projectileDirection = data[9];
       //      restart = data[9];
       //health = data[9];
       //opponent.health = data[10];
@@ -643,6 +655,6 @@ public class Player {
   }
 
   public String getData() {
-    return (x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
+    return ("2 " + x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
   }
 }
