@@ -292,12 +292,14 @@ public class Player {
   }
 
   private void drawSound() {
+    pushStyle();
     ellipseMode(CENTER);
     stroke(255, 255, 0);
     noFill();
     ellipse(pulseCenterX, pulseCenterY, pulseEllipseD, pulseEllipseD);
     pulseEllipseD += 25;
     ellipseMode(CORNER);
+    popStyle();
   }
 
   private void updateShot() {
@@ -327,7 +329,7 @@ public class Player {
     }
   }
 
-  private void checkShotCollisionForPlayers(Player opp) {
+  private void checkShotCollisionForPlayers(Player opp) { //will probably stay same for client in 1v2
     if (projectileStartX <= opp.x+opp.playerW && projectileStartX >= opp.x) {
       if (projectileStartY <= opp.y+opp.playerW && projectileStartY >= opp.y) {
         shotFired = 0;

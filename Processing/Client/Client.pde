@@ -2,15 +2,15 @@ import processing.net.*;
 
 static final boolean DEBUG = true;
 static final int PLAYER1_START_X= 340;
-static final int PLAYER1_START_Y = 150;
+static final int PLAYER1_START_Y = 100;
 static final int PLAYER1_START_DIRECTION = 2;
 
 static final int PLAYER2_START_X = 30; //opponent
-static final int PLAYER2_START_Y = 150;
+static final int PLAYER2_START_Y = 175;
 static final int PLAYER2_START_DIRECTION = 3;
 
-static final int PLAYER3_START_X = 30; //teammate
-static final int PLAYER3_START_Y = 25;
+static final int PLAYER3_START_X = 340; //teammate
+static final int PLAYER3_START_Y = 300;
 static final int PLAYER3_START_DIRECTION = 2;
 
 static final int WINDOW_HEIGHT = 400;
@@ -41,11 +41,13 @@ void setup() {
 
   player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false);
   teammate = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false);
+  
   opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true);
 
   player.setOpponent(opponent);
   teammate.setOpponent(opponent);
- opponent.setOpponent(player); // will need to update
+  
+  opponent.setOpponent(player); // will need to update
 
   c = new processing.net.Client(this, "127.0.0.1", 12345);
 }
@@ -55,7 +57,7 @@ void draw() {
   background(0);  
   pushStyle();
   noFill();
-  stroke(255,0,0);
+  stroke(255, 0, 0);
   rect(WINDOW_X, WINDOW_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
   popStyle();
 
@@ -81,6 +83,8 @@ void draw() {
   }
 
   opponent.render();
+  
+  teammate.render();
 
   if (gameOver) {
     stroke(0);

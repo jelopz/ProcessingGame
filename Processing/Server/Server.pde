@@ -3,15 +3,15 @@ import processing.net.*;
 static final boolean DEBUG = true;
 
 static final int PLAYER1_START_X= 30;
-static final int PLAYER1_START_Y = 150;
+static final int PLAYER1_START_Y = 175;
 static final int PLAYER1_START_DIRECTION = 3;
 
 static final int PLAYER2_START_X = 340;
-static final int PLAYER2_START_Y = 150;
+static final int PLAYER2_START_Y = 100;
 static final int PLAYER2_START_DIRECTION = 2;
 
-static final int PLAYER3_START_X = 30; //teammate
-static final int PLAYER3_START_Y = 25;
+static final int PLAYER3_START_X = 340; //teammate
+static final int PLAYER3_START_Y = 300;
 static final int PLAYER3_START_DIRECTION = 2;
 
 static final int WINDOW_HEIGHT = 400;
@@ -31,18 +31,6 @@ Player player;
 Player gunner;
 Player healer;
 
-int startX = 30;
-int startY = 150;
-int startDirection = 3;
-
-int gunnerStartX = 340 + 15;
-int gunnerStartY = 150 + 15;
-int gunnerStartDirection = 2;
-
-int healerStartX;
-int healerStartY;
-int healerStartDirection;
-
 boolean gameOver = false;
 boolean waiting = false;
 boolean winner;
@@ -56,8 +44,11 @@ void setup() {
 
   player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, true);
   gunner = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, false);
+  healer = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false);
+  
   player.setOpponent(gunner);
   gunner.setOpponent(player);
+  healer.setOpponent(player);
   s = new processing.net.Server(this, 12345);
 }
 
@@ -95,6 +86,7 @@ void draw() {
   stroke(0, 0, 255);
   fill(0, 0, 255);
   gunner.render();
+  healer.render();
 
   if (gameOver) {
     stroke(0);
