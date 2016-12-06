@@ -119,11 +119,11 @@ public class Player {
   }
 
   private void checkShotCollisionForBoundaries() {
-    if (projectileStartX <= 0 || projectileStartX >= windowWidth) {
+    if (projectileStartX <= WINDOW_X || projectileStartX >= WINDOW_WIDTH + WINDOW_X) {
       shotFired = 0;
       //      soundPulsing = false;
     }
-    if (projectileStartY <= 0 || projectileStartY >= windowHeight) {
+    if (projectileStartY <= WINDOW_Y || projectileStartY >= WINDOW_HEIGHT + WINDOW_Y) {
       shotFired = 0;
       //      soundPulsing = false;
     }
@@ -234,7 +234,7 @@ public class Player {
         }
       }
 
-      if (isLegal && y != 0) y-=5;
+      if (isLegal && y != WINDOW_Y) y-=5;
 
       direction = 0;
     } else if (movementDirection == 1) {
@@ -245,7 +245,7 @@ public class Player {
           isLegal = false;
         }
       }
-      if (isLegal && y != (windowHeight - playerW)) y+=5;
+      if (isLegal && y != (WINDOW_HEIGHT + WINDOW_Y - playerW)) y+=5;
       direction = 1;
     } else if (movementDirection == 2) {
       if (x == opponentMan.x+opponentMan.playerW) {
@@ -256,7 +256,7 @@ public class Player {
         }
       }
 
-      if (isLegal && x != 0) x-=5;
+      if (isLegal && x != WINDOW_X) x-=5;
       direction = 2;
     } else if (movementDirection == 3) {
       if (x+playerW == opponentMan.x) {
@@ -267,7 +267,7 @@ public class Player {
         }
       }
 
-      if (isLegal && x != windowWidth - playerW) x+=5;
+      if (isLegal && x != WINDOW_WIDTH + WINDOW_X - playerW) x+=5;
       direction = 3;
     }
   }
@@ -367,15 +367,15 @@ public class Player {
 
   public void reset(int player) {
     this.restart = false;
-    if (player == 0) {
-      x = startX;
-      y = startY;
-      direction = startDirection;
+    if (!isTeam) {
+      x = PLAYER1_START_X + WINDOW_X;
+      y = PLAYER1_START_Y + WINDOW_Y;
+      direction = PLAYER1_START_DIRECTION;
     } else
     {
-      x = gunnerStartX;
-      y = gunnerStartY;
-      direction = gunnerStartDirection;
+      x = PLAYER2_START_X + WINDOW_X;
+      y = PLAYER2_START_Y + WINDOW_Y;
+      direction = PLAYER2_START_DIRECTION;
     }
   }
 

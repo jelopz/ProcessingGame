@@ -2,6 +2,23 @@ import processing.net.*;
 
 static final boolean DEBUG = true;
 
+static final int PLAYER1_START_X= 30;
+static final int PLAYER1_START_Y = 150;
+static final int PLAYER1_START_DIRECTION = 3;
+
+static final int PLAYER2_START_X = 355;
+static final int PLAYER2_START_Y = 165;
+static final int PLAYER2_START_DIRECTION = 2;
+
+static final int PLAYER3_START_X = 30; //teammate
+static final int PLAYER3_START_Y = 25;
+static final int PLAYER3_START_DIRECTION = 2;
+
+static final int WINDOW_HEIGHT = 400;
+static final int WINDOW_WIDTH = 400;
+static final int WINDOW_X = 50;
+static final int WINDOW_Y = 50;
+
 int windowHeight = 400;
 int windowWidth = 400;
 
@@ -31,14 +48,14 @@ boolean waiting = false;
 boolean winner;
 
 void setup() {
-  size(400, 400);
+  size(500, 500);
   background(255);
   stroke(255, 0, 0);
   fill(255, 0, 0);
   textFont(createFont("SanSerif", 16));
 
-  player = new Player(startX, startY, startDirection, true);
-  gunner = new Player(gunnerStartX, gunnerStartY, gunnerStartDirection, false);
+  player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, true);
+  gunner = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, false);
   player.setOpponent(gunner);
   gunner.setOpponent(player);
   s = new processing.net.Server(this, 12345);
@@ -47,6 +64,11 @@ void setup() {
 void draw() {
   //  clear();
   background(255);  
+  pushStyle();
+  noFill();
+  stroke(255,0,0);
+  rect(WINDOW_X, WINDOW_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
+  popStyle();
 
   stroke(255, 0, 0);
   fill(255, 0, 0);
