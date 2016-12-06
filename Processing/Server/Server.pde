@@ -19,9 +19,6 @@ static final int WINDOW_WIDTH = 400;
 static final int WINDOW_X = 50;
 static final int WINDOW_Y = 50;
 
-int windowHeight = 400;
-int windowWidth = 400;
-
 processing.net.Server s;
 Client c;
 String input;
@@ -45,8 +42,10 @@ void setup() {
   player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, true);
   gunner = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, false);
   healer = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false);
-  
-  player.setOpponent(gunner);
+
+  //  player.setOpponent(gunner);
+  player.setOpponent(gunner, healer);
+
   gunner.setOpponent(player);
   healer.setOpponent(player);
   s = new processing.net.Server(this, 12345);
@@ -57,7 +56,7 @@ void draw() {
   background(255);  
   pushStyle();
   noFill();
-  stroke(255,0,0);
+  stroke(255, 0, 0);
   rect(WINDOW_X, WINDOW_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
   popStyle();
 

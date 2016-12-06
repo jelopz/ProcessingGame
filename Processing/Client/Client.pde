@@ -1,6 +1,7 @@
 import processing.net.*;
 
 static final boolean DEBUG = true;
+
 static final int PLAYER1_START_X= 340;
 static final int PLAYER1_START_Y = 100;
 static final int PLAYER1_START_DIRECTION = 2;
