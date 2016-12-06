@@ -5,13 +5,13 @@ static final int PLAYER1_START_X= 355;
 static final int PLAYER1_START_Y = 165;
 static final int PLAYER1_START_DIRECTION = 2;
 
-static final int PLAYER2_START_X = 30;
+static final int PLAYER2_START_X = 30; //opponent
 static final int PLAYER2_START_Y = 150;
 static final int PLAYER2_START_DIRECTION = 3;
 
-static final int PLAYER3_START_X = 30;
+static final int PLAYER3_START_X = 30; //teammate
 static final int PLAYER3_START_Y = 25;
-static final int PLAYER3_START_DIRECTION = 3;
+static final int PLAYER3_START_DIRECTION = 2;
 
 static final int WINDOW_HEIGHT = 400;
 static final int WINDOW_WIDTH = 400;

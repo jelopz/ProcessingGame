@@ -627,14 +627,14 @@ public class Player {
 
   public void reset(int player) {
     this.restart = false;
-    if (player == 0) {
-      x = PLAYER1_START_X;
-      y = PLAYER1_START_Y;
+    if (isTeam) {
+      x = PLAYER1_START_X + WINDOW_X;
+      y = PLAYER1_START_Y + WINDOW_Y;
       direction = PLAYER1_START_DIRECTION;
     } else
     {
-      x = PLAYER2_START_X;
-      y = PLAYER2_START_Y;
+      x = PLAYER2_START_X + WINDOW_X;
+      y = PLAYER2_START_Y + WINDOW_Y;
       direction = PLAYER2_START_DIRECTION;
     }
   }
