@@ -388,7 +388,11 @@ public class Player {
     //  checkShotCollisionForPlayers(opponentTeam[0]);
     //  checkShotCollisionForPlayers(opponentTeam[1]);
     //}
-    checkShotCollisionForPlayers(opponentMan);
+    if (isTeam) checkShotCollisionForPlayers(opponentMan);
+    else {
+      checkShotCollisionForPlayers(opponentTeam[0]);
+      checkShotCollisionForPlayers(opponentTeam[1]);
+    }
     checkShotCollisionForBoundaries();
   }
 
