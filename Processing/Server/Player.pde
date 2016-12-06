@@ -44,15 +44,17 @@ public class Player {
       playerW = BOX_W;
       isTeam = false;
     } else {
-      playerW = ELLIPSE_W;
+      playerW = BOX_W;
       isTeam = true;
     }
     ellipseMode(CORNER);
   }
 
   private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
-    if (!isTeam) drawBox();
-    else drawCircle();
+    //if (!isTeam) drawBox();
+    //else drawCircle();
+    
+    drawBox();
 
     //update flare cds and handle flare accordingly
     if (flareCD < FLARE_CD*1000) flareCD = millis() - flareMillis;

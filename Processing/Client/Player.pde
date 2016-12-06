@@ -61,7 +61,7 @@ public class Player {
       playerW = BOX_W;
       isTeam = false;
     } else {
-      playerW = ELLIPSE_W;
+      playerW = BOX_W;
       isTeam = true;
     }
 
@@ -98,6 +98,7 @@ public class Player {
     }
 
     //    println(player + " health " + health);
+    //    if (isTeam) drawCircle();
     if (isTeam) drawCircle();
 
     if (shotFired == 1) drawShot();
@@ -409,7 +410,7 @@ public class Player {
   }
 
   private void drawCircle() {
-    ellipse(x, y, ELLIPSE_W, ELLIPSE_W);
+    rect(x, y, BOX_W, BOX_W);
     drawDirectionalIndicator();
   }
 

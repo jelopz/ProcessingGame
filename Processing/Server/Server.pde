@@ -6,8 +6,8 @@ static final int PLAYER1_START_X= 30;
 static final int PLAYER1_START_Y = 150;
 static final int PLAYER1_START_DIRECTION = 3;
 
-static final int PLAYER2_START_X = 355;
-static final int PLAYER2_START_Y = 165;
+static final int PLAYER2_START_X = 340;
+static final int PLAYER2_START_Y = 150;
 static final int PLAYER2_START_DIRECTION = 2;
 
 static final int PLAYER3_START_X = 30; //teammate
