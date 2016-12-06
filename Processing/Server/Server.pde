@@ -74,8 +74,14 @@ void draw() {
       data = int(split(input, ' ')); // split values into an array
       if (DEBUG) println("data.length: " + data.length);
       if (data.length > 1) {
-        if (data[0] == 2) gunner.clientUpdate(data);
-        else if (data[0] == 3) healer.clientUpdate(data);
+        if (data[0] == 2) {
+          gunner.clientUpdate(data);
+          sendData(input);
+        } else if (data[0] == 3) {
+          healer.clientUpdate(data);
+          sendData(input);
+          //sendData(input);
+        }
       } else gunner.restart();
     }
     catch(StringIndexOutOfBoundsException e) {
@@ -146,4 +152,8 @@ void keyPressed() {
 
 void sendData() {
   s.write(player.getData());
+}
+
+void sendData(String d) {
+  s.write(d);
 }

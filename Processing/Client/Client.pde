@@ -75,12 +75,14 @@ void draw() {
       data = int(split(input, ' ')); // split values into an array
       if (DEBUG) println("data.length: " + data.length);
       if (data.length > 1) { 
-        if(data[0] == 1) opponent.clientUpdate(data);
-        else if (data[0] == 3) {} //do something
+        if (data[0] == 1) opponent.clientUpdate(data);
+        else if (data[0] == 3) teammate.clientUpdate(data); //do something
+        else if (data[0] == 2) println("hey");
       } else opponent.restart();
     }
     catch(StringIndexOutOfBoundsException e) {
-      if (DEBUG) println("woops"); //something went wrong
+      //      if (DEBUG) println(input); //something went wrong
+      tryAgain(input);
     }
 
     //draw information from server
@@ -104,6 +106,17 @@ void draw() {
       else text("You lose. Press S to get ready for the next game", 15, 45);
     }
   }
+}
+
+void tryAgain(String d) {
+  int brap[] = int(split(input, ' '));
+  if (brap.length > 1) { 
+    if (brap[0] == 1) opponent.clientUpdate(brap);
+    else if (brap[0] == 3) teammate.clientUpdate(brap); //do something
+    else if (brap[0] == 2) {
+    }//println("hey");
+  }
+  //  for(int i = 0; i < 10; i++) println(brap[i]);
 }
 
 void reset() {
