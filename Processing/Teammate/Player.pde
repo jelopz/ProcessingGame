@@ -643,9 +643,9 @@ public class Player {
   public void reset(int player) {
     this.restart = false;
     if (isTeam) {
-      x = PLAYER1_START_X + WINDOW_X;
-      y = PLAYER1_START_Y + WINDOW_Y;
-      direction = PLAYER1_START_DIRECTION;
+      x = PLAYER3_START_X + WINDOW_X;
+      y = PLAYER3_START_Y + WINDOW_Y;
+      direction = PLAYER3_START_DIRECTION;
     } else
     {
       x = PLAYER2_START_X + WINDOW_X;
