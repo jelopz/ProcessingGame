@@ -66,6 +66,7 @@ void draw() {
   stroke(125);
   fill(125);
   //send info to server
+  player.renderFlare();
   player.render();
   //recieve info from server/opponent here
   if (c.available() > 0) {

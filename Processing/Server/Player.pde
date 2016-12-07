@@ -7,6 +7,7 @@ public class Player {
   private final int FLARE_CD = 10;
   private final int FLARE_VISION_RANGE = 60;
   private final int FLARE_THROW_RANGE = 125;
+  private final int FLARE_CAST_TIME = 1;
 
   Player opponentMan;
   Player opponentTeam[] = new Player[2];
@@ -23,6 +24,8 @@ public class Player {
 
   private int flareX, flareY;
   private int flareCD, flareMillis;
+  private boolean flareActive;
+  private boolean throwing;
 
   private int hits;
 
@@ -53,6 +56,28 @@ public class Player {
     ellipseMode(CORNER);
   }
 
+  private void renderFlare() {
+    //    if (flareActive) drawFlare();
+
+    if (flareCD < FLARE_CD*1000) {
+      flareCD = millis() - flareMillis;
+      if (flareCD < (FLARE_CD - FLARE_DURATION)*1000) {
+        //flare cast animation
+        if (flareCD < FLARE_CAST_TIME*1000)
+        {
+          //
+        } else {
+          //
+          flareActive = true;
+          drawFlare();
+        }
+      } else {
+        flareActive = false;
+        throwing = false;
+      }
+    }
+  }
+
   private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
     //if (!isTeam) drawBox();
     //else drawCircle();
@@ -60,8 +85,8 @@ public class Player {
     drawBox();
 
     //update flare cds and handle flare accordingly
-    if (flareCD < FLARE_CD*1000) flareCD = millis() - flareMillis;
-    if (flareCD < (FLARE_CD - FLARE_DURATION)*1000) drawFlare();
+    //if (flareCD < FLARE_CD*1000) flareCD = millis() - flareMillis;
+    //if (flareCD < (FLARE_CD - FLARE_DURATION)*1000) drawFlare();
 
     if (shotFired == 1) drawShot();
 
@@ -157,11 +182,12 @@ public class Player {
   }
 
   private void drawFlare() {
-    //    rectMode(RADIUS);
-    stroke(0, 255, 0);
-    noFill();
+    pushStyle();
+    rectMode(CORNER);
+    noStroke();
+    fill(235, 116, 19);
     rect(flareX, flareY, FLARE_VISION_RANGE, FLARE_VISION_RANGE);
-    //    rectMode(CORNER);
+    popStyle();
   }
 
   private void drawBox() {
@@ -225,6 +251,18 @@ public class Player {
       projectileEndY = data[7];
       shotFired = data[8];
       projectileDirection = data[9];
+
+      if (isTeam) {
+        //
+        if (data[10] == 1) {
+          flareCD = 0;
+          flareMillis = millis();
+        }
+        flareX = data[11];
+        flareY = data[12];
+      }
+
+      println(flareActive + " " + flareX + " " + flareY);
       //      restart = data[9];
       //health = data[9];
       //opponent.health = data[10];

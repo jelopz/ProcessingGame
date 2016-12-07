@@ -63,7 +63,6 @@ void draw() {
   stroke(255, 0, 0);
   fill(255, 0, 0);
   //send player information to opponent
-  player.render();
 
   //recieve info from client/opponent here
   c = s.available();
@@ -99,10 +98,16 @@ void draw() {
     //draw information from client
   }
 
+  pushStyle();
   stroke(0, 0, 255);
   fill(0, 0, 255);
+  gunner.renderFlare();
+  healer.renderFlare();
   gunner.render();
   healer.render();
+  popStyle();
+
+  player.render();
 
   if (gameOver) {
     stroke(0);
@@ -126,7 +131,7 @@ void reset() {
   player.reset();
   gunner.reset();
   healer.reset();
-//  sendData();
+  //  sendData();
 }
 
 void keyPressed() {

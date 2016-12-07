@@ -27,6 +27,7 @@ public class Player {
   private int flareX, flareY;
   private int flareCD, flareMillis;
   private boolean flareActive;
+  private boolean throwing;
 
   private int flareProjectileDirection;
   private int flareProjectileX, flareProjectileY, flareProjectileSize;
@@ -55,6 +56,7 @@ public class Player {
     hits = 0;
 
     isHealer = isHeal;
+    throwing = false;
 
     flareCD = FLARE_CD*1000;
     flareActive = false;
@@ -71,7 +73,7 @@ public class Player {
     ellipseMode(CORNER);
   }
 
-  private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
+  private void renderFlare() {
     //update flare cds and handle flare accordingly
     if (flareCD < FLARE_CD*1000) {
       flareCD = millis() - flareMillis;
@@ -91,8 +93,14 @@ public class Player {
           flareActive = true;
           drawFlare();
         }
-      } else flareActive = false;
+      } else {
+        flareActive = false;
+        throwing = false;
+      }
     }
+  }
+
+  private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
 
     //if (opponentMan.flareActive && !isTeam && isRevealed(opponentMan)) {
     // determineVisibleEnemyCoordinates(opponentMan);
@@ -586,6 +594,7 @@ public class Player {
         if (flareY < WINDOW_Y) flareY = WINDOW_Y;
         else if (flareY + FLARE_VISION_RANGE > WINDOW_Y + WINDOW_WIDTH) flareY = WINDOW_Y + WINDOW_WIDTH - FLARE_VISION_RANGE;
 
+        throwing = true;
         flareCD = 0;
         flareMillis = millis();
       }
@@ -667,6 +676,13 @@ public class Player {
   }
 
   public String getData() {
-    return ("3 " + x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " + projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + "\n");
+    if (throwing)
+      return ("3 " + x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " +
+        projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + " 1 " + 
+        flareX + " " + flareY + "\n");
+    else
+      return ("3 " + x + " " + y + " " + direction + " " + projectileStartX + " " + projectileStartY + " " +
+        projectileEndX + " " + projectileEndY + " " + shotFired + " " + projectileDirection + " 0 " + 
+        flareX + " " + flareY + "\n");
   }
 }
