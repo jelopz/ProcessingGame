@@ -8,6 +8,8 @@ public class Player {
   private final int FLARE_VISION_RANGE = 60;
   private final int FLARE_THROW_RANGE = 125;
   private final int FLARE_CAST_TIME = 1;
+  private final int FLARE_PROJECTILE_BASE_SIZE = 1;
+  private final int FLARE_PROJECTILE_SPEED = 2;
 
   Player opponentMan;
   Player opponentTeam[] = new Player[2];
@@ -26,6 +28,10 @@ public class Player {
   private int flareCD, flareMillis;
   private boolean flareActive;
   private boolean throwing;
+
+  private int flareProjectileDirection;
+  private int flareProjectileX, flareProjectileY, flareProjectileSize;
+  private boolean flareProjectileActive;
 
   private int hits;
 
@@ -65,9 +71,15 @@ public class Player {
         //flare cast animation
         if (flareCD < FLARE_CAST_TIME*1000)
         {
-          //
+          flareProjectileActive = true; 
+          flareActive = false;
+          if (flareCD < FLARE_CAST_TIME*1000/2) { //draw flare going up
+            drawFlareAnimation(true);
+          } else { //draw flare going down
+            drawFlareAnimation(false);
+          }
         } else {
-          //
+          flareProjectileActive = false;
           flareActive = true;
           drawFlare();
         }
@@ -76,6 +88,42 @@ public class Player {
         throwing = false;
       }
     }
+  }
+
+  private void drawFlareAnimation(boolean isFirstHalf) { //is first half of animation or second half?
+    pushStyle();
+    ellipseMode(CORNER);
+    fill(255, 0, 0);
+    ellipse(flareProjectileX, flareProjectileY, flareProjectileSize, flareProjectileSize);
+    popStyle();
+
+    if (isFirstHalf) {
+      flareProjectileSize++;
+    } else {
+      flareProjectileSize--;
+    }
+
+    switch(flareProjectileDirection) {
+    case 0: //up
+      flareProjectileY-=FLARE_PROJECTILE_SPEED;
+      break;
+    case 1: //down
+      flareProjectileY+=FLARE_PROJECTILE_SPEED;
+      break;
+    case 2: //left
+      flareProjectileX-=FLARE_PROJECTILE_SPEED;
+      break;
+    case 3: //right
+      flareProjectileX+=FLARE_PROJECTILE_SPEED;
+      break;
+    default:
+      break;
+    }
+
+    if (flareProjectileX < WINDOW_X) flareProjectileX = WINDOW_X;
+    else if (flareProjectileX + flareProjectileSize > WINDOW_X+WINDOW_WIDTH) flareProjectileX = WINDOW_X+WINDOW_WIDTH - flareProjectileSize;
+    if (flareProjectileY < WINDOW_Y) flareProjectileY = WINDOW_Y;
+    else if (flareProjectileY + flareProjectileSize > WINDOW_Y+WINDOW_WIDTH) flareProjectileY = WINDOW_Y+WINDOW_HEIGHT - flareProjectileSize;
   }
 
   private void render() { //parameter is 0 if drawing player, 1 if drawing opponent
@@ -254,10 +302,7 @@ public class Player {
 
       if (isTeam) {
         //
-        if (data[10] == 1) {
-          flareCD = 0;
-          flareMillis = millis();
-        }
+        if (data[10] == 1) throwFlare();
         flareX = data[11];
         flareY = data[12];
       }
@@ -338,39 +383,52 @@ public class Player {
   private void throwFlare() {
     //case n:
     //determine flares ending location based on players position and direction they are facing
-
     //ref:
     //private final int FLARE_CD = 5;
     //private final int FLARE_VISION_RANGE = 20;
     //private final int FLARE_THROW_RANGE = 20;
-
     //private int flareX, flareY;
     //private int flareCD;
+    if (!flareProjectileActive) {
+      flareProjectileSize = FLARE_PROJECTILE_BASE_SIZE;
+      flareProjectileX = x + playerW;
+      flareProjectileY = y + playerW;
+      flareProjectileDirection = direction;
 
-    if (flareCD >= FLARE_CD*1000) {
-      switch(direction) {
-      case 0: //up
-        flareX = x - 15;
-        flareY = y - FLARE_THROW_RANGE;
-        break;
-      case 1: //down
-        flareX = x - 15;
-        flareY = y + FLARE_THROW_RANGE;
-        break;
-      case 2: //left
-        flareX = x - FLARE_THROW_RANGE;
-        flareY = y - 15;
-        break;
-      case 3: //right
-        flareX = x + FLARE_THROW_RANGE;
-        flareY = y - 15;
-        break;
-      default:
-        break;
+      //      if (flareProjectileX < WINDOW_X) flareProjectileX = 0;
+      //      if (flareProjectileX > WINDOW_X + WINDOW_WIDTH) flareProjectileX = WINDOW_WIDTH + WINDOW_X - FLARE_PROJECTILE_RANGE;
+
+      if (flareCD >= FLARE_CD*1000) {
+        switch(direction) {
+        case 0: //up
+          flareX = x - 15;
+          flareY = y - FLARE_THROW_RANGE;
+          break;
+        case 1: //down
+          flareX = x - 15;
+          flareY = y + FLARE_THROW_RANGE;
+          break;
+        case 2: //left
+          flareX = x - FLARE_THROW_RANGE;
+          flareY = y - 15;
+          break;
+        case 3: //right
+          flareX = x + FLARE_THROW_RANGE;
+          flareY = y - 15;
+          break;
+        default:
+          break;
+        }
+
+        if (flareX < WINDOW_X) flareX = WINDOW_X;
+        else if (flareX + FLARE_VISION_RANGE > WINDOW_X + WINDOW_WIDTH) flareX = WINDOW_X + WINDOW_WIDTH - FLARE_VISION_RANGE;
+        if (flareY < WINDOW_Y) flareY = WINDOW_Y;
+        else if (flareY + FLARE_VISION_RANGE > WINDOW_Y + WINDOW_WIDTH) flareY = WINDOW_Y + WINDOW_WIDTH - FLARE_VISION_RANGE;
+
+        throwing = true;
+        flareCD = 0;
+        flareMillis = millis();
       }
-
-      flareCD = 0;
-      flareMillis = millis();
     }
   }
 

@@ -493,10 +493,7 @@ public class Player {
 
       if (isTeam) {
         //
-        if (data[10] == 1) {
-          flareCD = 0;
-          flareMillis = millis();
-        }
+        if (data[10] == 1) throwFlare();
         flareX = data[11];
         flareY = data[12];
       }
