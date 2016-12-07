@@ -39,9 +39,9 @@ void setup() {
   fill(255, 0, 0);
   textFont(createFont("SanSerif", 16));
 
-  player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, true);
-  gunner = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, false);
-  healer = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false);
+  player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, true, false);
+  gunner = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, false, false);
+  healer = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false, true);
 
   //  player.setOpponent(gunner);
   player.setOpponent(gunner, healer);
@@ -82,7 +82,16 @@ void draw() {
           sendData(input);
           //sendData(input);
         }
-      } else gunner.restart();
+      } else {
+        if (data[0] == 2) {
+          gunner.restart();
+          sendData(input);
+        } else if (data[0] == 3) {
+          println(data[0] + "                    " + millis());
+          healer.restart();
+          sendData(input);
+        }
+      }
     }
     catch(StringIndexOutOfBoundsException e) {
       if (DEBUG) println("woops"); //something went wrong
@@ -99,8 +108,8 @@ void draw() {
     stroke(0);
 
     if (waiting) {
-      text("Waiting on opponent", 15, 45);
-      if (gunner.restart)
+      text("Waiting on players", 15, 45);
+      if (gunner.restart && healer.restart)
       {
         reset();
       }
@@ -114,9 +123,10 @@ void draw() {
 void reset() {
   waiting = false;
   gameOver = false;
-  player.reset(0);
-  gunner.reset(1);
-  sendData();
+  player.reset();
+  gunner.reset();
+  healer.reset();
+//  sendData();
 }
 
 void keyPressed() {
@@ -139,7 +149,7 @@ void keyPressed() {
   if (key == 's' && gameOver == true) {
     player.restart();
     s.write("1\n"); //inform other players we are ready
-    if (!gunner.restart) waiting = true;
+    if (!gunner.restart || !healer.restart) waiting = true;
     else reset();
   }
   if (key == 'z' && gameOver == false && waiting == false) {

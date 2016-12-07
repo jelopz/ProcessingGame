@@ -29,9 +29,10 @@ public class Player {
   private boolean restart = false;
 
   private boolean isTeam;
+  private boolean isHealer;
 
 
-  public Player(int x, int y, int direction, boolean isBox) {
+  public Player(int x, int y, int direction, boolean isBox, boolean isHeal) {
     this.x = x;
     this.y = y;
     this.direction = direction;
@@ -39,6 +40,8 @@ public class Player {
     hits = 0;
 
     flareCD = FLARE_CD*1000;
+
+    isHealer = isHeal;
 
     if (isBox) {
       playerW = BOX_W;
@@ -387,17 +390,22 @@ public class Player {
     this.restart = true;
   }
 
-  public void reset(int player) {
+  public void reset() {
     this.restart = false;
     if (!isTeam) {
       x = PLAYER1_START_X + WINDOW_X;
       y = PLAYER1_START_Y + WINDOW_Y;
       direction = PLAYER1_START_DIRECTION;
-    } else
-    {
-      x = PLAYER2_START_X + WINDOW_X;
-      y = PLAYER2_START_Y + WINDOW_Y;
-      direction = PLAYER2_START_DIRECTION;
+    } else {
+      if (!isHealer) {
+        x = PLAYER2_START_X + WINDOW_X;
+        y = PLAYER2_START_Y + WINDOW_Y;
+        direction = PLAYER2_START_DIRECTION;
+      } else {
+        x = PLAYER3_START_X + WINDOW_X;
+        y = PLAYER3_START_Y + WINDOW_Y;
+        direction = PLAYER3_START_DIRECTION;
+      }
     }
   }
 

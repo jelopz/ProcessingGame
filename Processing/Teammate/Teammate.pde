@@ -40,10 +40,10 @@ void setup() {
   stroke(255, 0, 0);
   fill(255, 0, 0);
 
-  teammate = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false);
-  player = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false);
+  teammate = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false, true);
+  player = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false, false);
 
-  opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true);
+  opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true, false);
 
   player.setOpponent(opponent);
   teammate.setOpponent(opponent);
@@ -74,11 +74,14 @@ void draw() {
       input = input.substring(0, input.indexOf("\n")); // only up to the newline
       data = int(split(input, ' ')); // split values into an array
       if (DEBUG) println("data.length: " + data.length);
-      if (data.length > 1) {
+      if (data.length > 2) {
         if (data[0] == 1) opponent.clientUpdate(data);
         else if (data[0] == 2) teammate.clientUpdate(data); //do something
         else if (data[0] == 3) println("hey");
-      } else opponent.restart();
+      } else { 
+        if (data[0] == 1) opponent.restart();
+        else if (data[0] == 2) teammate.restart();
+      }
     }
     catch(StringIndexOutOfBoundsException e) {
       //      if (DEBUG) println(input); //something went wrong
@@ -96,8 +99,8 @@ void draw() {
     stroke(0);
 
     if (waiting) {
-      text("Waiting on opponent", 15, 45);
-      if (opponent.restart)
+      text("Waiting on players", 15, 45);
+      if (opponent.restart && teammate.restart)
       {
         reset();
       }
@@ -115,6 +118,9 @@ void tryAgain(String d) {
     else if (brap[0] == 3) {
     } //teammate.clientUpdate(data); //do something
     else if (brap[0] == 2) teammate.clientUpdate(brap);
+  } else {
+    if (brap[0] == 1) opponent.restart();
+    else if (brap[0] == 2) teammate.restart();
   }
   //  for(int i = 0; i < 10; i++) println(brap[i]);
 }
@@ -122,9 +128,10 @@ void tryAgain(String d) {
 void reset() {
   waiting = false;
   gameOver = false;
-  player.reset(0);
-  opponent.reset(1);
-  sendData();
+  player.reset();
+  opponent.reset();
+  teammate.reset();
+  //sendData();
 }
 
 void keyPressed() {
@@ -145,8 +152,8 @@ void keyPressed() {
   }
   if ((key == 's' || key == 'S') && gameOver == true) { //we readied up
     player.restart();
-    c.write("1\n"); //inform other players we are ready
-    if (!opponent.restart) waiting = true; //we are waiting for players
+    c.write("3\n"); //inform other players we are ready
+    if (!opponent.restart || !teammate.restart) waiting = true; //we are waiting for players
     else reset();
   }
   if ((key == 'z' || key == 'Z') && gameOver == false && waiting == false) {

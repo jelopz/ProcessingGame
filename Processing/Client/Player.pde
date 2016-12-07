@@ -45,13 +45,16 @@ public class Player {
   private boolean restart = false;
 
   private boolean isTeam;
+  private boolean isHealer;
 
-  public Player(int x, int y, int direction, boolean isBox) {
+  public Player(int x, int y, int direction, boolean isBox, boolean isHeal) {
     this.x = x;
     this.y = y;
     this.direction = direction;
     health = 3;
     hits = 0;
+
+    isHealer = isHeal;
 
     flareCD = FLARE_CD*1000;
     flareActive = false;
@@ -99,13 +102,13 @@ public class Player {
 
     //isRevealed(opponentMan) - does opponentMan's flare reveal me?
     if (!isTeam) {
-     for (int i = 0; i < 2; i++) {
-       if (opponentTeam[i].flareActive && isRevealed(opponentTeam[i])) {
-         determineVisibleEnemyCoordinates(opponentTeam[i]);
-         drawVisible();
-         //drawBox();
-       }
-     }
+      for (int i = 0; i < 2; i++) {
+        if (opponentTeam[i].flareActive && isRevealed(opponentTeam[i])) {
+          determineVisibleEnemyCoordinates(opponentTeam[i]);
+          drawVisible();
+          //drawBox();
+        }
+      }
     }
 
 
@@ -644,17 +647,22 @@ public class Player {
     this.restart = true;
   }
 
-  public void reset(int player) {
+  public void reset() {
     this.restart = false;
-    if (isTeam) {
-      x = PLAYER1_START_X + WINDOW_X;
-      y = PLAYER1_START_Y + WINDOW_Y;
-      direction = PLAYER1_START_DIRECTION;
-    } else
-    {
+    if (!isTeam) {
       x = PLAYER2_START_X + WINDOW_X;
       y = PLAYER2_START_Y + WINDOW_Y;
       direction = PLAYER2_START_DIRECTION;
+    } else {
+      if (!isHealer) {
+        x = PLAYER1_START_X + WINDOW_X;
+        y = PLAYER1_START_Y + WINDOW_Y;
+        direction = PLAYER1_START_DIRECTION;
+      } else {
+        x = PLAYER3_START_X + WINDOW_X;
+        y = PLAYER3_START_Y + WINDOW_Y;
+        direction = PLAYER3_START_DIRECTION;
+      }
     }
   }
 
