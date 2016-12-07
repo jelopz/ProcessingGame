@@ -116,17 +116,17 @@ void draw() {
     stroke(0);
 
     if (waiting) {
-      text("Waiting on players", 15, 45);
+      text("Waiting on players", 55, 35);
       //      println(opponent.restart + " " + teammate.restart + " " + millis());
       if (opponent.restart && teammate.restart)
       {
         reset();
       }
     } else {
-      if (winner) text("You win. Press S to get ready for the next game", 15, 45);
-      else text("You lose. Press S to get ready for the next game", 15, 45);
+      if (winner) text("You win. Press S to get ready for the next game", 55, 35);
+      else text("You lose. Press S to get ready for the next game", 55, 35);
     }
-  }
+  } else text("Your team has been hit " + opponent.hits + " out of 3 times", 55, 475);
 }
 
 void tryAgain(String d) {
