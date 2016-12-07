@@ -19,6 +19,12 @@ static final int WINDOW_WIDTH = 400;
 static final int WINDOW_X = 50;
 static final int WINDOW_Y = 50;
 
+public PImage greenTank[] = new PImage[4];
+;// = loadImage("tank.png");
+public PImage blueTank[] = new PImage[4];
+;// = loadImage("bluetank.png");
+public PImage greyTank[] = new PImage[4];
+
 processing.net.Client c;
 String input;
 int data[];
@@ -40,10 +46,10 @@ void setup() {
   stroke(255, 0, 0);
   fill(255, 0, 0);
 
-  teammate = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false, true);
-  player = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false, false);
+  teammate = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false, true, greyTank);
+  player = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false, false, greyTank);
 
-  opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true, false);
+  opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true, false, greenTank);
 
   player.setOpponent(opponent);
   teammate.setOpponent(opponent);
@@ -62,6 +68,12 @@ void draw() {
   stroke(255, 0, 0);
   rect(WINDOW_X, WINDOW_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
   popStyle();
+
+  for (int i = 0; i < 4; i++) {
+    greenTank[i] = loadImage("redtank" + i + ".png");
+    blueTank[i] = loadImage("bluetank" + i + ".png");
+    greyTank[i] = loadImage("greytank" + i + ".png");
+  }
 
   stroke(125);
   fill(125);

@@ -19,6 +19,9 @@ static final int WINDOW_WIDTH = 400;
 static final int WINDOW_X = 50;
 static final int WINDOW_Y = 50;
 
+public PImage greenTank[] = new PImage[4];
+public PImage blueTank[] = new PImage[4];
+
 processing.net.Server s;
 Client c;
 String input;
@@ -39,9 +42,16 @@ void setup() {
   fill(255, 0, 0);
   textFont(createFont("SanSerif", 16));
 
-  player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, true, false);
-  gunner = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, false, false);
-  healer = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false, true);
+  for (int i = 0; i < 4; i++) {
+    greenTank[i] = loadImage("tank" + i + ".png");
+    blueTank[i] = loadImage("bluetank" + i + ".png");
+  }
+  //greenTank = loadImage("tank.png");
+  //blueTank = loadImage("bluetank.png");
+
+  player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, true, false, greenTank);
+  gunner = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, false, false, blueTank);
+  healer = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false, true, blueTank);
 
   //  player.setOpponent(gunner);
   player.setOpponent(gunner, healer);

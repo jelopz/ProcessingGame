@@ -40,13 +40,17 @@ public class Player {
   private boolean isTeam;
   private boolean isHealer;
 
+  private PImage graphic[];
 
-  public Player(int x, int y, int direction, boolean isBox, boolean isHeal) {
+
+  public Player(int x, int y, int direction, boolean isBox, boolean isHeal, PImage[] g) {
     this.x = x;
     this.y = y;
     this.direction = direction;
     health = 3;
     hits = 0;
+    
+    graphic = g;
 
     flareCD = FLARE_CD*1000;
 
@@ -239,13 +243,14 @@ public class Player {
   }
 
   private void drawBox() {
-    rect(x, y, BOX_W, BOX_W);
-    drawDirectionalIndicator();
+    //    rect(x, y, BOX_W, BOX_W);
+    image(graphic[direction], x, y, BOX_W, BOX_W);
+    //    drawDirectionalIndicator();
   }
 
   private void drawCircle() {
     ellipse(x, y, ELLIPSE_W, ELLIPSE_W);
-    drawDirectionalIndicator();
+    //    drawDirectionalIndicator();
   }
 
   private void drawDirectionalIndicator() {

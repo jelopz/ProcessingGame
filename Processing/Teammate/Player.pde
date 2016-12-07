@@ -48,12 +48,16 @@ public class Player {
   private boolean isTeam;
   private boolean isHealer;
 
-  public Player(int x, int y, int direction, boolean isBox, boolean isHeal) {
+  private PImage graphic[];
+
+  public Player(int x, int y, int direction, boolean isBox, boolean isHeal, PImage[] g) {
     this.x = x;
     this.y = y;
     this.direction = direction;
     health = 3;
     hits = 0;
+
+    graphic = g;
 
     isHealer = isHeal;
     throwing = false;
@@ -425,22 +429,33 @@ public class Player {
     noStroke();
     fill(255, 0, 0);
     rect(x, y, BOX_W, BOX_W);
-    drawDirectionalIndicator();
+    //drawDirectionalIndicator();
     popStyle();
   }
 
   private void drawVisible() {
+    //    PImage g = get((direction+1)*-100, (direction+1)*-100, visiblePoints[2]-visiblePoints[0], visiblePoints[3]-visiblePoints[1]);
+    PImage g;
+    int w = visiblePoints[2]-visiblePoints[0];
+    int h = visiblePoints[5]-visiblePoints[1];
+    //    visible6, visible7 = ending x,y
+    if (direction == 1 || direction == 3) g = graphic[direction].get(0, 0, w, h);
+    else g = graphic[direction].get(30-w, 30-h, w, h); 
     pushStyle();
     noStroke();
     fill(255, 0, 0);
-    quad(visiblePoints[0], visiblePoints[1], visiblePoints[2], visiblePoints[3], visiblePoints[6], visiblePoints[7], visiblePoints[4], visiblePoints[5]);
-    drawDirectionalIndicator();
+    //    image(g, visiblePoints[0], visiblePoints[1], 40, 40);
+    image(g, visiblePoints[0], visiblePoints[1], visiblePoints[2]-visiblePoints[0], visiblePoints[5]-visiblePoints[1]);
+    //    image(
+    //    quad(visiblePoints[0], visiblePoints[1], visiblePoints[2], visiblePoints[3], visiblePoints[6], visiblePoints[7], visiblePoints[4], visiblePoints[5]);
+    //    drawDirectionalIndicator();
     popStyle();
   }
 
   private void drawCircle() {
-    rect(x, y, BOX_W, BOX_W);
-    drawDirectionalIndicator();
+    //    rect(x, y, BOX_W, BOX_W);
+    //   drawDirectionalIndicator();
+    image(graphic[direction], x, y, BOX_W, BOX_W);
   }
 
   private void drawDirectionalIndicator() {

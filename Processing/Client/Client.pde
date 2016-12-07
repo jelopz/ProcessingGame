@@ -1,6 +1,6 @@
 import processing.net.*;
 
-static final boolean DEBUG = true;
+public static final boolean DEBUG = true;
 
 static final int PLAYER1_START_X= 340;
 static final int PLAYER1_START_Y = 100;
@@ -18,6 +18,12 @@ static final int WINDOW_HEIGHT = 400;
 static final int WINDOW_WIDTH = 400;
 static final int WINDOW_X = 50;
 static final int WINDOW_Y = 50;
+
+public PImage greenTank[] = new PImage[4];
+;// = loadImage("tank.png");
+public PImage blueTank[] = new PImage[4];
+;// = loadImage("bluetank.png");
+public PImage greyTank[] = new PImage[4];
 
 processing.net.Client c;
 String input;
@@ -40,15 +46,20 @@ void setup() {
   stroke(255, 0, 0);
   fill(255, 0, 0);
 
-  player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false, false);
-  teammate = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false, true);
+  for (int i = 0; i < 4; i++) {
+    greenTank[i] = loadImage("redtank" + i + ".png");
+    blueTank[i] = loadImage("bluetank" + i + ".png");
+    greyTank[i] = loadImage("greytank" + i + ".png");
+  }
 
-  opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true, false);
+  player = new Player(PLAYER1_START_X + WINDOW_X, PLAYER1_START_Y + WINDOW_Y, PLAYER1_START_DIRECTION, false, false, greyTank);
+  teammate = new Player(PLAYER3_START_X + WINDOW_X, PLAYER3_START_Y + WINDOW_Y, PLAYER3_START_DIRECTION, false, true, greyTank);
+
+  opponent = new Player(PLAYER2_START_X + WINDOW_X, PLAYER2_START_Y + WINDOW_Y, PLAYER2_START_DIRECTION, true, false, greenTank);
 
   player.setOpponent(opponent);
   teammate.setOpponent(opponent);
 
-  //    opponent.setOpponent(player); // will need to update
   opponent.setOpponent(player, teammate);
 
   c = new processing.net.Client(this, "127.0.0.1", 12345);
