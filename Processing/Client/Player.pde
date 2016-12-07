@@ -489,6 +489,16 @@ public class Player {
       projectileEndY = data[7];
       shotFired = data[8];
       projectileDirection = data[9];
+
+      if (isTeam) {
+        //
+        if (data[10] == 1) {
+          flareCD = 0;
+          flareMillis = millis();
+        }
+        flareX = data[11];
+        flareY = data[12];
+      }
       //      restart = data[9];
       //health = data[9];
       //opponent.health = data[10];

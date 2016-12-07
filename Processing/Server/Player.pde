@@ -262,7 +262,7 @@ public class Player {
         flareY = data[12];
       }
 
-      println(flareActive + " " + flareX + " " + flareY);
+      //      println(flareActive + " " + flareX + " " + flareY);
       //      restart = data[9];
       //health = data[9];
       //opponent.health = data[10];
