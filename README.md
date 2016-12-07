@@ -8,8 +8,7 @@ For now, the Server class acts as Player 1 and the Client class acts as Player 2
 
 TODO:
 
-2. Show flare on all 3 screens
-3. Graphics
+2. Background graphic
 3. More classes? Check out Evolve for more potential ideas.
 4. Brainstorm
 
