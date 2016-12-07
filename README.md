@@ -8,7 +8,6 @@ For now, the Server class acts as Player 1 and the Client class acts as Player 2
 
 TODO:
 
-1. Wait for all 3 players to hit S before restarting.
 2. Show flare on all 3 screens
 3. Graphics
 3. More classes? Check out Evolve for more potential ideas.
