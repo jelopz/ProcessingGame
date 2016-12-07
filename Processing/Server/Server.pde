@@ -36,7 +36,7 @@ boolean waiting = false;
 boolean winner;
 
 void setup() {
-  size(500, 500);
+  size(500, 550);
   background(255);
   stroke(255, 0, 0);
   fill(255, 0, 0);
@@ -131,9 +131,11 @@ void draw() {
       }
     } else {
       if (winner) text("You win. Press S to get ready for the next game", 55, 35);
-      else text("You lose. Press S to get ready for the next game", 15, 35);
+      else text("You lose. Press S to get ready for the next game", 55, 35);
     }
-  } else text("You have hit the enemy " + player.hits + " out of 3 times", 55, 475);
+  } else text("You have hit the enemy " + player.hits + " out of 3 times", 55, 35);
+  
+  text("Use arrow keys to move\nSpacebar to shoot\nZ to throw flare", 55, 475);
 }
 
 void reset() {
